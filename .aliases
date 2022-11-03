@@ -1,0 +1,5 @@
+alias ls='exa -a -1 -l --group-directories-first --git --no-user -h'
+alias cr='cargo run'
+alias gs='git status'
+alias gaa='git add .'
+alias se='sudoedit'
