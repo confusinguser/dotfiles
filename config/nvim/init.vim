@@ -16,7 +16,8 @@ Plug 'lambdalisue/suda.vim'
 call plug#end()
 
 let g:coc_global_extensions = [
-			\ 'coc-rust-analyzer' 
+			\ 'coc-rust-analyzer',
+			\ 'coc-pairs'
 			\]
 
 nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
@@ -41,3 +42,5 @@ noremap ö l
 cnoreabbrev SudaWrite sw
 cnoreabbrev SudaRead sr
 
+packadd termdebug
+let g:termdebugger="rust-gdb"

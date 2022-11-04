@@ -1,6 +1,7 @@
 if status is-interactive
     starship init fish | source
     cat ~/.aliases | source
+    zoxide init fish --cmd cd | source
 end
 set fish_greeting
 export EDITOR='/usr/bin/nvim'
