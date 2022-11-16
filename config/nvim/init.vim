@@ -6,7 +6,8 @@ endif
 
 set updatetime=750
 set number relativenumber
-highlight LineNr ctermfg=grey
+let mapleader = ','
+"highlight LineNr ctermfg=grey
 
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 " Plugin Section
@@ -79,11 +80,30 @@ noremap k j
 noremap l k
 noremap ö l
 
-nunmap <C-l>
 nnoremap <C-l> <C-y>
 nnoremap <C-k> <C-e>
 
-nmap <C-S-d> <C-u>
+nnoremap <C-S-d> <C-u>
+
+" Exit terminal mode
+tnoremap <ESC> <C-\><C-N>
+
+" Window switching
+nnoremap <C-w>j <C-w>h
+nnoremap <C-w>k <C-w>j
+nnoremap <C-w>l <C-w>k
+nnoremap <C-w>ö <C-w>l
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocActionAsync('doHover')
+  endif
+endfunction
 
 cnoreabbrev SudaWrite sw
 cnoreabbrev SudaRead sr

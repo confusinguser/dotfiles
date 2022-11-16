@@ -4,3 +4,7 @@ if status is-interactive
     zoxide init fish --cmd cd | source
 end
 set fish_greeting
+
+function fish_user_key_bindings
+    bind \cH backward-kill-word
+end
