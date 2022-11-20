@@ -1,3 +1,15 @@
 {
-	"coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "rs", "rust"]
+        "coc.preferences.formatOnSaveFiletypes": ["css", "markdown", "rs", "rust"],
+        "rust-analyzer.checkOnSave.command": "clippy",
+        "rust-analyzer.cargo.features": "all",
+        "rust-analyzer.imports.prefix": "self",
+        "rust-analyzer.imports.granularity.group": "module",
+        "rust-analyzer.imports.granularity.enforce": true,
+        "rust-analyzer.inlayHints.typeHintsSeparator": "",
+        "rust-analyzer.inlayHints.chainingHintsSeparator": "",
+        "prettier.semi": false,
+        "prettier.tabWidth": 4,
+        "prettier.endOfLine": "lf",
+        "prettier.printWidth": 120,
+        "prettier.trailingComma": "es5"
 }
