@@ -1,7 +1,8 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR EDITOR:/usr/bin/nvim
-SETUVAR VISUAL:/usr/bin/nvim
+SETUVAR --export EDITOR:/usr/bin/nvim
+SETUVAR --export MOZ_ENABLE_WAYLAND:1
+SETUVAR --export VISUAL:/usr/bin/nvim
 SETUVAR __fish_initialized:3400
 SETUVAR fish_color_autosuggestion:555\x1ebrblack
 SETUVAR fish_color_cancel:\x2dr

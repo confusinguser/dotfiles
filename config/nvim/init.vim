@@ -12,6 +12,7 @@ Plug 'morhetz/gruvbox'
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'junegunn/fzf.vim'
+Plug 'mfussenegger/nvim-dap'
 call plug#end()
 
 runtime lualine/init.lua
@@ -32,9 +33,8 @@ set updatetime=300
 
 " Set color scheme to gruvbox
 colorscheme gruvbox
-let g:gruvbox_contrast_dark="medium"
+let g:gruvbox_contrast_dark="hard"
 set background=dark
-highlight Normal ctermbg=NONE
 
 " Format on capital F
 nmap <silent> F :Format<CR>
@@ -46,13 +46,23 @@ filetype plugin indent on
 set fdm=syntax
 " Inline signcolumn (git gutter)
 set signcolumn=number
+set scrolloff=6 " Keep n lines below and above the cursor
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 let g:coc_global_extensions = [
                         \ 'coc-rust-analyzer',
                         \ 'coc-pairs',
-                        \ 'coc-prettier']
+                        \ 'coc-prettier',
+                        \ 'coc-java']
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice.
@@ -102,11 +112,13 @@ noremap j h
 noremap k j
 noremap l k
 noremap ö l
-map <C-j> <C-k>
-map <C-k> <C-l>
 
-nnoremap <C-l> <C-y>
-nnoremap <C-k> <C-e>
+" For overriding NetRW, it's ugly yes
+autocmd VimEnter * noremap <C-l> <C-y>
+noremap <C-k> <C-e>
+
+"map <C-j> <C-k>
+"map <C-k> <C-l>
 
 nnoremap <C-S-d> <C-u>
 
@@ -132,6 +144,9 @@ endfunction
 
 " Remap for rename current word
 map <F6> <plug>(coc-rename)
+
+nnoremap <C-j> b
+nnoremap <C-ö> w
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
