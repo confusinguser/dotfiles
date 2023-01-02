@@ -5,11 +5,10 @@
     "gtk-layer-shell": false,
     // "width": 1280, // Waybar width
     // Choose the order of the modules
-    "modules-left": ["custom/separator", "custom/spotify"],
-    "modules-center": ["clock"],
+    "modules-left": ["wlr/workspaces", "custom/separator", "custom/spotify"],
+    "modules-center": ["clock#hours", "clock#minutes"],
     "modules-right": [
         "cpu", 
-        "custom/separator",
         "pulseaudio",
         "custom/separator",
         "network",
@@ -25,9 +24,9 @@
         "on-scroll-up": "/usr/local/bin/hyprctl dispatch workspace m-1"
     },
     "wlr/workspaces": {
-        "sort-by-name": true,
-        // "on-click": "/usr/local/bin/hyprctl dispatch workspace 3"
-        // "sort-by-coordinates": true
+        "sort-by-coordinates": true,
+        "on-click": "activate",
+        // "sort-by-coordinates": true,
         "all-outputs":true,
     },
     "custom/language": {
@@ -46,20 +45,23 @@
         }
     },
     "tray": {
-        "icon-size": 30,
-        "spacing": 6
+        "icon-size": 26,
+        "spacing": 1
     },
-    "clock": {
+    "clock#hours": {
         // "timezone": "America/New_York",
-        "format": "{:%H:%M:%S %a %Y-%m-%d}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%H:%M:%S}",
+        //"format": "{:%H %a %Y-%m-%d}",
+        "format": "{:%H}",
+        "interval": 1
+    },
+    "clock#minutes": {
+        "format": "{:%M}",
         "interval": 1
     },
     "cpu": {
         "format": " {usage}%",
         "tooltip": false,
-        "on-click": "kitty procs --sortd cpu --watch-interval 2"
+        "on-click": "kitty btop"
     },
     "memory": {
         "format": " {}%"
@@ -74,7 +76,7 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": " ",
+        "format-wifi": "",
         "format-ethernet": "&#8239;{ifname}: {ipaddr}/{cidr}",
         "format-linked": "&#8239;{ifname} (No IP)",
         "format-disconnected": "  Disconnected",
@@ -82,19 +84,17 @@
     },
     "pulseaudio": {
         "scroll-step": 1, // %, can be a float
-        "format": "{icon} {volume}% {format_source}",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": "{icon} {format_source}",
-        "format-muted": "{icon} 0% {format_source}",
-        "format-source": " {volume}%",
-        "format-source-muted": "",
+        "format": "{icon} {volume}%",
+//        "format-bluetooth": "{volume}% {icon}",
+//        "format-bluetooth-muted": "{icon}",
+        "format-muted": " ",
+//        "format-source": " {volume}%",
+//        "format-source-muted": "",
         "format-icons": {
-            "headphone": "",
-            "phone": "",
-            "portable": "",
-            "default": ["", "", ""]
+            "default": ["", ""]
         },
-        "on-click": "pavucontrol"
+        "on-click": "pavucontrol",
+        "on-right-click": "pulseaudio-ctl mute"
     },
     "custom/pacman": {
         "format": "📦{}",

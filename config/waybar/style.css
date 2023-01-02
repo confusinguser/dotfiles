@@ -107,6 +107,11 @@ window#waybar.chromium {
     /* box-shadow: inset 0 -3px #ffffff; */
 }
 
+#workspaces button.focused:hover {
+    background: #ffffff;
+    /* box-shadow: inset 0 -3px #ffffff; */
+}
+
 #workspaces button.focused {
     background-color: #bbccdd;
     color: #323232;
@@ -131,6 +136,7 @@ window#waybar.chromium {
 #backlight,
 #network,
 #pulseaudio,
+#pulseaudio.muted,
 #custom-media,
 #tray,
 #mode,
@@ -144,11 +150,17 @@ window#waybar.chromium {
     color: @fgcolor;
     /* background-color: #bbccdd; */
     background-color: transparent;
+    border-radius: 100px;
+}
+
+#tray {
+    padding: 0 0 0 0;
+    margin: 0 0 0 0;
 }
 
 #window,
 #workspaces {
-    margin: 0 4px;
+    margin: 0 0px;
 }
 
 /* If workspaces is the leftmost module, omit left margin */
@@ -162,6 +174,25 @@ window#waybar.chromium {
 }
 
 #clock {
+    letter-spacing: 2px;
+    font-family: "Anton";
+    border-radius: 10px;
+    /*    font-weight: 900;*/
+    color: #ffffff;
+}
+
+#clock.hours {
+    padding: 0 0 0 0;
+    margin-left: 2;
+    margin-right: 10px;
+    margin-top: -5px;
+    margin-bottom: 10px;
+}
+
+#clock.minutes {
+    padding: 0 0 0 0;
+    margin: 5 0 -10 0;
+    margin-left: -18px;
 }
 
 #battery {
@@ -193,7 +224,7 @@ window#waybar.chromium {
 }
 
 label:focus {
-    background-color: #000000;
+    background-color: #ffffff;
 }
 
 #cpu {
@@ -212,7 +243,8 @@ label:focus {
     color: @alert;
 }
 
-#pulseaudio {
+#pulseaudio,
+#pulseaudio.muted {
     background-color: #8f5af2;
 }
 
@@ -288,17 +320,17 @@ label:focus {
 
 #custom-language {
     /* background: #bbccdd;
-    color: #333333;
-    padding: 0 5px;
-    margin: 4px 3px 6px 3px; */
+        color: #333333;
+        padding: 0 5px;
+        margin: 4px 3px 6px 3px; */
     color: @accent5;
     min-width: 16px;
 }
 
 #custom-separator {
     color: #606060;
-    margin: 0 1px;
-    padding-bottom: 5px;
+    margin: 0 0px;
+    font-size: 20px;
 }
 
 #custom-wmname {
