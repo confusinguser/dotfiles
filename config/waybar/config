@@ -6,14 +6,14 @@
     // "width": 1280, // Waybar width
     // Choose the order of the modules
     "modules-left": ["wlr/workspaces", "custom/separator", "custom/spotify"],
-    "modules-center": ["clock#hours", "clock#minutes"],
+    "modules-center": ["clock#hours", "clock#minutes", "clock#month", "clock#day"],
     "modules-right": [
+        "custom/updates",
+        "custom/separator",
         "cpu", 
         "pulseaudio",
         "custom/separator",
         "network",
-        "custom/separator",
-        "custom/pacman",
         "custom/separator",
         "tray"],
     // Modules configuration
@@ -58,68 +58,79 @@
         "format": "{:%M}",
         "interval": 1
     },
+    "clock#month": {
+    "format": "{:%a}",
+            "format-alt": "{:%b}",
+            "interval": 1
+    },
+    "clock#day": {
+            "format": "{:%d}",
+            "format-alt": "{:%d}",
+            "interval": 1
+    },
     "cpu": {
-        "format": " {usage}%",
-        "tooltip": false,
-        "on-click": "kitty btop"
+            "format": " {usage}%",
+            "tooltip": false,
+            "on-click": "kitty btop"
     },
     "memory": {
-        "format": " {}%"
+            "format": " {}%"
     },
     "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C {icon}",
-        "format": "{icon}&#8239;{temperatureC}°C",
-        "format-icons": ["", "", ""]
+            // "thermal-zone": 2,
+            // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+            "critical-threshold": 80,
+            // "format-critical": "{temperatureC}°C {icon}",
+            "format": "{icon}&#8239;{temperatureC}°C",
+            "format-icons": ["", "", ""]
     },
     "network": {
-        // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "",
-        "format-ethernet": "&#8239;{ifname}: {ipaddr}/{cidr}",
-        "format-linked": "&#8239;{ifname} (No IP)",
-        "format-disconnected": "  Disconnected",
-        "format-alt": "{essid}: {ipaddr} {frequency}"
+            // "interface": "wlp2*", // (Optional) To force the use of this interface
+            "format-wifi": "",
+            "format-ethernet": "&#8239;{ifname}: {ipaddr}/{cidr}",
+            "format-linked": "&#8239;{ifname} (No IP)",
+            "format-disconnected": "  Disconnected",
+            "format-alt": "{essid}: {ipaddr} {frequency}"
     },
     "pulseaudio": {
-        "scroll-step": 1, // %, can be a float
-        "format": "{icon} {volume}%",
-//        "format-bluetooth": "{volume}% {icon}",
-//        "format-bluetooth-muted": "{icon}",
-        "format-muted": " ",
-//        "format-source": " {volume}%",
-//        "format-source-muted": "",
-        "format-icons": {
-            "default": ["", ""]
-        },
-        "on-click": "pavucontrol",
-        "on-right-click": "pulseaudio-ctl mute"
+            "scroll-step": 1, // %, can be a float
+            "format": "{icon} {volume}%",
+            //        "format-bluetooth": "{volume}% {icon}",
+            //        "format-bluetooth-muted": "{icon}",
+            "format-muted": " ",
+            //        "format-source": " {volume}%",
+            //        "format-source-muted": "",
+            "format-icons": {
+                    "default": ["", ""]
+            },
+            "on-click": "pavucontrol",
+            "on-right-click": "pulseaudio-ctl mute"
     },
-    "custom/pacman": {
-        "format": "📦{}",
-        "exec": "~/dotfiles/scripts/update-count.sh",
-        "interval": 600,
-        "on-click": "kitty yay -Syu --noconfirm --ignore=linux*"
+    "custom/updates": {
+            "format": "{}",
+            "exec": "~/dotfiles/config/waybar/scripts/update-count",
+            "interval": 600,
+            "return-type": "json",
+            "on-click": "kitty yay -Syu"
     },
     "custom/spotify": {
-        "exec": "echo $(~/dotfiles/config/waybar/scripts/music-playing) ",
-        "format": "{}",
-        "interval": 1,
-        "on-click": "playerctl play-pause",
-        "on-scroll-up": "playerctl next",
-        "on-scroll-down": "playerctl previous"
+            "exec": "echo $(~/dotfiles/config/waybar/scripts/music-playing) ",
+            "format": "{}",
+            "interval": 1,
+            "on-click": "playerctl play-pause",
+            "on-scroll-up": "playerctl next",
+            "on-scroll-down": "playerctl previous"
     },
     "custom/media": {
-        "format": "{icon} {}",
-        "return-type": "json",
-        "max-length": 40,
-        "format-icons": {
-            "spotify": "",
-            "default": "🎜"
-        },
-        "escape": true,
-        "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-        // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
+            "format": "{icon} {}",
+            "return-type": "json",
+            "max-length": 40,
+            "format-icons": {
+                    "spotify": "",
+                    "default": "🎜"
+            },
+            "escape": true,
+            "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
+                                                                       // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
     }
 }
