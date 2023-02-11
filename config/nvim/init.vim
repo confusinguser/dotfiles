@@ -113,6 +113,10 @@ noremap k j
 noremap l k
 noremap ö l
 
+" Move over wrapped lines
+noremap <silent> <expr> k (v:count == 0 ? 'gj' : 'k')
+noremap <silent> <expr> l (v:count == 0 ? 'gk' : 'l')
+
 " For overriding NetRW, it's ugly yes
 autocmd VimEnter * noremap <C-l> <C-y>
 noremap <C-k> <C-e>
