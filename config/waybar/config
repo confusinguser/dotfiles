@@ -5,16 +5,13 @@
     "gtk-layer-shell": false,
     // "width": 1280, // Waybar width
     // Choose the order of the modules
-    "modules-left": ["wlr/workspaces", "custom/separator", "custom/spotify"],
+    "modules-left": ["wlr/workspaces", "custom/spotify"],
     "modules-center": ["clock#hours", "clock#minutes", "clock#month", "clock#day"],
     "modules-right": [
         "custom/updates",
-        "custom/separator",
         "cpu", 
         "pulseaudio",
-        "custom/separator",
         "network",
-        "custom/separator",
         "tray"],
     // Modules configuration
     "custom/wmname": {
@@ -109,17 +106,19 @@
     "custom/updates": {
             "format": "{}",
             "exec": "~/dotfiles/config/waybar/scripts/update-count",
-            "interval": 600,
+            "interval": 10,
             "return-type": "json",
             "on-click": "kitty yay -Syu"
     },
     "custom/spotify": {
-            "exec": "echo $(~/dotfiles/config/waybar/scripts/music-playing) ",
+            "exec": "echo $(~/dotfiles/config/waybar/scripts/music-playing)",
             "format": "{}",
             "interval": 1,
+            "escape": true,
             "on-click": "playerctl play-pause",
             "on-scroll-up": "playerctl next",
-            "on-scroll-down": "playerctl previous"
+            "on-scroll-down": "playerctl previous",
+            "return-type": "json",
     },
     "custom/media": {
             "format": "{icon} {}",
