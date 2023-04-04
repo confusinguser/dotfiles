@@ -12,20 +12,20 @@ if [ "$(playerctl status)" == "Paused" ]; then
                         i=$(($i-1))
                         char=$(echo $title | cut -c $i)
                 done
-                echo {\"text\":\"$(echo $title | cut -c 1-$i)…  \", \"class\":\"spotify-paused\"}
+                echo {\"text\":\"$(echo ${title//\"/\\\"} | cut -c 1-$i)…  \", \"class\":\"spotify-paused\"}
         else
-                echo {\"text\":\"$title  \", \"class\":\"spotify-paused\"}
+                echo {\"text\":\"${title//\"/\\\"}  \", \"class\":\"spotify-paused\"}
         fi
 else
         if [ $(echo $title | wc -c) -gt 30 ]; then
                 i=27
                 char=$(echo $title | cut -c $i)
-                while [ "$char" == "\"" ] || [ "$char" == " " ] || [ "$char" == "-" ] || [ "$char" == "." ] || [ "$char" == "&" ] || [ "$char" == "(" ]; do
+                while [ "$char" == "\"" ] || [ "$char" == " " ] || [ "$char" == "-" ] || [ "$char" == "." ] || [ "$char" == "&" ] || [ "$char" == "(" ] || [ "$char" == "," ]; do
                         i=$(($i-1))
                         char=$(echo $title | cut -c $i)
                 done
-                echo {\"text\":\"$(echo $title | cut -c 1-$i)… – $artist  \", \"class\":\"spotify-playing\"}
+                echo {\"text\":\"$(echo ${title//\"/\\\"} | cut -c 1-$i)… – $artist  \", \"class\":\"spotify-playing\"}
         else
-                echo {\"text\":\"$title – $artist  \", \"class\":\"spotify-playing\"}
+                echo {\"text\":\"${title//\"/\\\"} – $artist  \", \"class\":\"spotify-playing\"}
         fi
 fi
