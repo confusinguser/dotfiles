@@ -1,6 +1,5 @@
 {
     "layer": "top", // Waybar at top layer
-    // "position": "left", // Waybar position (top|bottom|left|right)
     "height": 36, // Waybar height (to be removed for auto height)
     "gtk-layer-shell": false,
     // "width": 1280, // Waybar width
@@ -21,7 +20,7 @@
         "on-scroll-up": "/usr/local/bin/hyprctl dispatch workspace m-1"
     },
     "wlr/workspaces": {
-        "sort-by-coordinates": true,
+        "sort-by-number": true,
         "on-click": "activate",
         // "sort-by-coordinates": true,
         "all-outputs":true,
