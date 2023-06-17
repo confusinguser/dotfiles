@@ -1,3 +1,7 @@
+if status is-login
+    wrappedhl
+end
+
 if status is-interactive
     starship init fish | source
     cat ~/dotfiles/.aliases | source
