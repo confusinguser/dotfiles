@@ -1,6 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR --export EDITOR:/usr/bin/nvim
+SETUVAR --export EDITOR:/home/mk/\x2elocal/bin/lvim
 SETUVAR --export MOZ_ENABLE_WAYLAND:1
 SETUVAR --export VISUAL:/usr/bin/nvim
 SETUVAR __fish_initialized:3400

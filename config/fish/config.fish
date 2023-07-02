@@ -9,8 +9,13 @@ if status is-interactive
 end
 set fish_greeting
 
+export PATH="~/.local/bin:$PATH"
+
 function fish_user_key_bindings
-    bind \cH backward-kill-word
+    bind \cH backward-kill-path-component
     bind § accept-autosuggestion
     bind \cs backward-kill-line
+    bind \es 'fish_commandline_prepend doas'
+    bind \[3\;5~ kill-word
+    bind -k backspace kill-selection or backward-delete-char
 end
