@@ -159,6 +159,3 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 noremap <silent><nowait> <RightMouse> <LeftMouse>zo
-
-packadd termdebug
-let g:termdebugger="rust-gdb"

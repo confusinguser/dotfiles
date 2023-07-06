@@ -9,7 +9,7 @@ if status is-interactive
 end
 set fish_greeting
 
-export PATH="~/.local/bin:$PATH"
+export PATH="/home/mk/.local/bin:$PATH"
 
 function fish_user_key_bindings
     bind \cH backward-kill-path-component
