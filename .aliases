@@ -1,14 +1,27 @@
-alias ls='exa -a -l --group-directories-first --git --no-user --no-time'
 alias cr='cargo run'
+alias crr='cargo run --release'
+alias cc='cargo check'
+
+alias pl='paru -Qi'
+alias ps='paru -Si'
+alias pi='paru -S'
+
+alias gp='git push'
+alias gst='git stash'
+alias gstp='git stash pop'
 alias gs='git status'
 alias gaa='git add --all'
 alias gc='git commit'
-alias se='sudoedit'
-alias pl='yay -Qi'
-alias ps='yay -Si'
-alias adios='systemctl poweroff'
-alias pi='yay -S'
+alias gca='git add --all && git commit'
+
 
 alias fzh='find . -type f -not -path "*/\.git/*" | fzf'
-alias nf='nvim $(fzh)'
+alias nf='lvim $(fzh)'
 alias sef='se $(fzh)'
+
+alias sctl='systemctl'
+alias bctl='bluetoothctl'
+
+alias adios='systemctl poweroff'
+alias se='sudoedit'
+alias ls='exa -a -l --group-directories-first --git --no-user --no-time'
