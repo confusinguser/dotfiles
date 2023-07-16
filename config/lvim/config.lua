@@ -26,37 +26,61 @@ lvim.plugins = {
 
 
 lvim.keys.normal_mode["j"] = "h"
-lvim.keys.normal_mode["k"] = "j"
-lvim.keys.normal_mode["l"] = "k"
+lvim.keys.normal_mode["k"] = "gj"
+lvim.keys.normal_mode["l"] = "gk"
 lvim.keys.normal_mode["ö"] = "l"
 lvim.keys.visual_mode["j"] = "h"
-lvim.keys.visual_mode["k"] = "j"
-lvim.keys.visual_mode["l"] = "k"
+lvim.keys.visual_mode["k"] = "gj"
+lvim.keys.visual_mode["l"] = "gk"
 lvim.keys.visual_mode["ö"] = "l"
-
-
-vim.api.nvim_set_keymap("n", "<Tab>", "<cmd>BufferLineCycleNext<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+vim.api.nvim_set_keymap("n", "<C-Tab>", "<cmd>BufferLineCycleNext<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-w>", "<cmd>BufferKill<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>NvimTreeToggle<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<C-j>", "<cmd>winc h<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>winc j<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-l>", "<cmd>winc k<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-ö>", "<cmd>winc l<CR>", { noremap = true, silent = true })
+
+local dap = require 'dap'
+local dapui = require 'dapui'
+vim.keymap.set("n", "<F1>", dap.step_over)
+vim.keymap.set("n", "<F2>", dap.step_into)
+vim.keymap.set("n", "<F7>", dap.continue)
+vim.keymap.set("n", "<F8>", dap.toggle_breakpoint)
+vim.keymap.set("n", "<F12>", function()
+  dap.disconnect()
+  dapui.close()
+end)
+
+
+local api = require("nvim-tree.api")
+api.events.subscribe(api.events.Event.TreeAttachedPost, function(bufnr)
+  vim.keymap.set("n", "l", "k", { buffer = bufnr, noremap = true, silent = true, nowait = true })
+  vim.keymap.set("n", "ö", api.node.open.edit, { buffer = bufnr, noremap = true, silent = true, nowait = true })
+end)
+
+lvim.lsp.buffer_mappings.normal_mode['K'] = { vim.lsp.buf.hover, "Show documentation" }
+lvim.lsp.buffer_mappings.normal_mode['<F6>'] = { vim.lsp.buf.rename, "Rename" }
+lvim.builtin.which_key.mappings['rc'] = { vim.lsp.buf.incoming_calls, "Incoming Calls" }
+
+vim.keymap.set("n", "<M-d>", function() vim.diagnostic.open_float(nil, { focusable = false }) end)
+
 -- Stop cursor continuing on next line
 vim.opt.whichwrap:remove({ "h", "l" })
+vim.opt.completeopt = { 'menuone', 'noselect', 'noinsert' }
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.api.nvim_set_option('updatetime', 300)
 
 -- use treesitter folding
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
-require("nvim-tree").setup({
-  on_attach = function(bufnr)
-    local api = require "nvim-tree.api"
-    vim.keymap.set("n", "l", "k", { buffer = bufnr, noremap = true, silent = true, nowait = true })
-    vim.keymap.set("n", "ö", api.node.open.edit, { buffer = bufnr, noremap = true, silent = true, nowait = true })
-  end,
-})
-
-vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 require 'nvim-treesitter.configs'.setup {
   ensure_installed = { "svelte", "typescript", "ron", "wgsl", "wgsl_bevy", "javascript", "css", "rust", "lua" },
@@ -145,11 +169,12 @@ rt.setup({
       }
     }
   },
+  dap = {
+    adapter = {
+      type = "executable",
+      command = "lldb-vscode",
+      name = "rt_lldb",
+    },
+  },
 })
 rt.inlay_hints.enable()
---vim.api.nvim_create_autocmd({"BufWritePost"}, {
---  pattern = {"*.rs"},
---  callback = function()
---    vim.cmd("%! rustfmt --emit stdout %:S | tail -n +3")
---  end
---})
