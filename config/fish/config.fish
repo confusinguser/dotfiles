@@ -1,5 +1,13 @@
-if status is-login
-    wrappedhl
+if [ -z "$DISPLAY" ] && [ "$(tty)" = /dev/tty1 ]
+    export XDG_SESSION_DESKTOP=sway
+    export XDG_CURRENT_DESKTOP=sway
+
+    # Firefox
+    export MOZ_ENABLE_WAYLAND=1
+
+    # Qt5
+    export XDG_SESSION_TYPE=wayland
+    sway
 end
 
 if status is-interactive
@@ -7,7 +15,6 @@ if status is-interactive
     cat ~/dotfiles/.aliases | source
     zoxide init fish --cmd cd | source
 end
-set fish_greeting
 
 export PATH="/home/mk/.local/bin:$PATH"
 

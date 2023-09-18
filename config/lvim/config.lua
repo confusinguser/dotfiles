@@ -69,6 +69,9 @@ lvim.lsp.buffer_mappings.normal_mode['K'] = { vim.lsp.buf.hover, "Show documenta
 lvim.lsp.buffer_mappings.normal_mode['<F6>'] = { vim.lsp.buf.rename, "Rename" }
 lvim.builtin.which_key.mappings['rc'] = { vim.lsp.buf.incoming_calls, "Incoming Calls" }
 
+local telescope = require('telescope.builtin')
+lvim.builtin.which_key.mappings['td'] = { telescope.diagnostics, "Diagnostics" }
+
 vim.keymap.set("n", "<M-d>", function() vim.diagnostic.open_float(nil, { focusable = false }) end)
 
 -- Stop cursor continuing on next line

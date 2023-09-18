@@ -2,13 +2,13 @@
     border: none;
     border-radius: 6px;
     /* Recommended font sizes: 720p: ~14px, 1080p: ~18px */
-    font-size: 19px; /* Can't select the text for workspaces therefore put here and change everything else back, same with font-family */
+    font-size: 15px; /* Can't select the text for workspaces therefore put here and change everything else back, same with font-family */
     min-height: 0;
     font-family: "Sono Monospace";
 }
 
 window#waybar {
-    background-color: rgba(34, 36, 54, 0);
+    background-color: rgba(0, 0, 0, 1);
     /* border-bottom: 0px solid rgba(100, 114, 125, 0.5); */
     color: #ffffff;
     transition-property: background-color;
@@ -38,8 +38,8 @@ window#waybar.chromium {
 }
 
 #workspaces button {
-    padding: 0 0 0 0;
-    margin: 4px 0 6px 0;
+    padding: 5px 0 1px 0;
+    margin: 4px 0 4px 0;
     background-color: transparent;
     color: #ebdbb2;
     min-width: 36px;
@@ -48,9 +48,9 @@ window#waybar.chromium {
     /* border-radius: 0px; */
 }
 
-#workspaces button.active {
-    padding: 0 0 0 0;
-    margin: 4px 0 6px 0;
+#workspaces button.focused {
+    padding: 5px 0 1px 0;
+    margin: 4px 0 4px 0;
     background-color: #ebdbb2;
     color: #282828;
     /* Use box-shadow instead of border so the text isn't offset */
@@ -63,7 +63,7 @@ window#waybar.chromium {
     box-shadow: inset 0 0px rgba(0, 0, 0, 0.2);
 }
 
-#workspaces button.active:hover {
+#workspaces button.focused:hover {
     background: #ebdbb2;
     /* box-shadow: inset 0 -3px #ffffff; */
 }
@@ -127,44 +127,10 @@ window#waybar.chromium {
 
 #clock {
     padding: 0 0 0 0;
-    letter-spacing: 2px;
-    font-family: "Anton";
+    letter-spacing: 1px;
+    font-family: "Antonio";
+    font-weight: 900;
     border-radius: 10px;
-    /*    font-weight: 900;*/
-}
-
-#clock.hours {
-    padding-left: 6;
-    margin-left: 0px;
-    padding-right: 61px;
-    margin-top: -3px;
-    padding-top: 0;
-    padding-bottom: 13px;
-    margin-right: 3px;
-    background-color: #cc241d;
-    color: #ffffff;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-}
-
-#clock.minutes {
-    margin: -2 0 -10 0;
-    margin-left: -130px;
-    color: #ffffff;
-}
-
-#clock.month {
-    margin-left: -45px;
-    margin-right: 0px;
-    margin-top: -9px;
-    margin-bottom: 10px;
-    color: #ffffff;
-}
-
-#clock.day {
-    margin: -2 0 -10 0;
-    margin-left: -36px;
-    color: #ffffff;
 }
 
 #battery {
@@ -228,12 +194,12 @@ label:focus {
     color: @accent6;
 }
 
-#custom-waylandvsxorg {
-    color: @accent5;
-}
-
 #custom-updates.update-count {
-    background: linear-gradient(90deg, rgba(216, 140, 76, 1) 0%, rgba(254, 180, 71, 1) 100%);
+    background: linear-gradient(
+        90deg,
+        rgba(216, 140, 76, 1) 0%,
+        rgba(254, 180, 71, 1) 100%
+    );
 }
 
 #custom-spotify {

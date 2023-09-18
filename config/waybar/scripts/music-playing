@@ -2,9 +2,9 @@
 
 sleep 0.1
 
-title=$(playerctl metadata title)
-artist=$(playerctl metadata artist)
-if [ "$(playerctl status)" == "Paused" ]; then
+title=$(playerctl -s metadata title)
+artist=$(playerctl -s metadata artist)
+if [ "$(playerctl -s status)" == "Paused" ]; then
         if [ $(echo $title | wc -c) -gt 15 ]; then
                 i=12
                 char=$(echo $title | cut -c $i)

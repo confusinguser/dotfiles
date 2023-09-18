@@ -16,4 +16,5 @@ theme='launcher'
 ## Run
 rofi \
     -show drun \
+    -modi drun \
     -theme ${dir}/${theme}.rasi

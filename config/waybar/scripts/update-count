@@ -1,6 +1,6 @@
 #!/usr/bin/sh
 
-upgradable=$(yay -Qu | wc -l)
+upgradable=$(paru -Qu | wc -l)
 #upgradable=$(echo 3)
 
 if [ "$upgradable" == "0" ]; then
