@@ -68,10 +68,8 @@ smart_gaps on
 # gaps inner 10
 
 # Autostart
-exec --no-startup-id redshift -c ~/.config/redshift/config
 exec spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
 exec discord 
-exec --no-startup-id nextcloud
 # exec --no-startup-id libinput-gestures
 
 # Fix https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
@@ -87,10 +85,8 @@ input * {
 
 # Default workspaces for common programs
 assign [app_id="^firefox$"] workspace $ws1
-# assign [class="^code-oss$"] $ws2
 assign [class="^discord$"] workspace $wsF1
-assign [app_id="^thunderbird$"] workspace $wsF2
-assign [class="^spotify$"] workspace $wsF12
+assign [class="^spotify$"] workspace $wsF2
 
 # Shortcuts
 bindsym $mod+Return exec kitty
