@@ -47,6 +47,8 @@ vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>winc j<CR>", { noremap = true, silen
 vim.api.nvim_set_keymap("n", "<C-l>", "<cmd>winc k<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-ö>", "<cmd>winc l<CR>", { noremap = true, silent = true })
 
+vim.api.nvim_set_keymap("n", "<C-S-v>", "<C-v>", { noremap = true, silent = true })
+
 local dap = require 'dap'
 local dapui = require 'dapui'
 vim.keymap.set("n", "<F1>", dap.step_over)
