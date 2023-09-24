@@ -1,11 +1,17 @@
+alias c='cargo'
 alias cr='cargo run'
 alias crr='cargo run --release'
 alias cc='cargo check'
+alias ccl='cargo clippy'
+alias cf='cargo clippy --fix'
 
+alias p='paru'
 alias pl='paru -Qi'
 alias ps='paru -Si'
 alias pi='paru -S'
+alias pr='paru -Rs'
 
+alias g='git'
 alias gp='git push'
 alias gst='git stash'
 alias gstp='git stash pop'
@@ -14,14 +20,19 @@ alias gaa='git add --all'
 alias gc='git commit'
 alias gca='git add --all && git commit'
 alias gd='git diff main'
+alias gl='git log'
+alias grs='git restore --staged'
 
-
-alias fzh='find . -type f -not -path "*/\.git/*" | fzf'
-alias nf='lvim $(fzh)'
-alias sef='se $(fzh)'
+alias fza='find . -type f -not -path "*/\.git/*" | fzf'
+alias lfza='lvim $(fza)'
+alias sefza='se $(fza)'
 
 alias sctl='systemctl'
 alias bctl='bluetoothctl'
+alias l='lvim'
+alias e='echo'
+alias o='open'
+
 
 alias adios='systemctl poweroff'
 alias se='sudoedit'
