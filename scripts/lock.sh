@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# case $(( $RANDOM % 4 )) in
-case 3 in
+case $(( $RANDOM % 4 )) in
+# case 3 in
   0) colors=("5EB1BF" "042A2BCC" "EF7B45") # Surfer's colors
     ;;
   1) colors=("8C2F39" "461220CC" "FCB8B0") # Hot incinerator

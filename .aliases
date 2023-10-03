@@ -25,7 +25,9 @@ alias grs='git restore --staged'
 
 alias fza='find . -type f -not -path "*/\.git/*" | fzf'
 alias lfza='lvim $(fza)'
+alias lfzf='lvim $(fzf)'
 alias sefza='se $(fza)'
+alias sefzf='se $(fza)'
 
 alias sctl='systemctl'
 alias bctl='bluetoothctl'

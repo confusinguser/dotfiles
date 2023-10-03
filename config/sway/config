@@ -251,6 +251,6 @@ mode "$mode_system" {
 }
 bindsym $mod+Shift+e mode "$mode_system"
 
-exec_always ~/dotfiles/scripts/waybar_launch
+# exec_always ~/dotfiles/scripts/waybar_launch
 
 # include ~/.config/sway/$(hostname)/*

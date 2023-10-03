@@ -32,7 +32,8 @@
     "cpu": {
             "format": " {usage}%",
             "tooltip": false,
-            "on-click": "kitty btop"
+            "on-click": "kitty htop",
+"interval": 1
     },
     "memory": {
             "format": " {}%"
@@ -72,7 +73,7 @@
             "exec": "~/dotfiles/config/waybar/scripts/update-count",
             "interval": 10,
             "return-type": "json",
-            "on-click": "kitty yay -Syu"
+            "on-click": "kitty paru -Syu"
     },
     "custom/spotify": {
             "exec": "~/dotfiles/scripts/music-playing.rs",
