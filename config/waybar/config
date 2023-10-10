@@ -7,6 +7,7 @@
     "modules-left": ["sway/workspaces", "custom/spotify"],
     "modules-center": ["clock"],
     "modules-right": [
+        "custom/phone_battery",
         "custom/updates",
         "cpu", 
         "pulseaudio",
@@ -16,12 +17,9 @@
         "all-outputs":true,
         "disable-scroll": true,
     },
-    "custom/language": {
-        "exec": "swaymsg --type get_inputs | grep \"xkb_active_layout_name\" | sed -u '1!d; s/^.*xkb_active_layout_name\": \"//; s/ (US)//; s/\",//' && swaymsg --type subscribe --monitor '[\"input\"]' | sed -u 's/^.*xkb_active_layout_name\": \"//; s/\",.*$//; s/ (US)//'"
-    },
     "tray": {
         "icon-size": 26,
-        "spacing": 1
+        "spacing": 7
     },
     "clock": {
         // "timezone": "America/New_York",
@@ -35,24 +33,13 @@
             "on-click": "kitty htop",
 "interval": 1
     },
-    "memory": {
-            "format": " {}%"
-    },
-    "temperature": {
-            // "thermal-zone": 2,
-            // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-            "critical-threshold": 80,
-            // "format-critical": "{temperatureC}°C {icon}",
-            "format": "{icon}&#8239;{temperatureC}°C",
-            "format-icons": ["", "", ""]
-    },
     "network": {
             // "interface": "wlp2*", // (Optional) To force the use of this interface
             "format-wifi": "",
             "format-ethernet": "&#8239;{ifname}: {ipaddr}/{cidr}",
             "format-linked": "&#8239;{ifname} (No IP)",
             "format-disconnected": "  Disconnected",
-            "format-alt": "{essid}: {ipaddr} {frequency}"
+            "format-alt": "{essid}: {ipaddr} {frequency} GHz"
     },
     "pulseaudio": {
             "scroll-step": 1, // %, can be a float
@@ -85,16 +72,14 @@
             "on-scroll-down": "playerctl previous",
             "return-type": "json",
     },
-    "custom/media": {
-            "format": "{icon} {}",
-            "return-type": "json",
-            "max-length": 40,
-            "format-icons": {
-                    "spotify": "",
-                    "default": "🎜"
-            },
+    "custom/phone_battery": {
+            "exec": "~/dotfiles/scripts/phone-battery-status.rs",
+            "format": "{}",
+            "restart-interval": 1,
             "escape": true,
-            "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
-                                                                       // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    }
+            "on-click": "",
+            "on-scroll-up": "",
+            "on-scroll-down": "",
+            "return-type": "json",
+    },
 }

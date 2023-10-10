@@ -79,19 +79,14 @@ window#waybar.chromium {
 
 #clock,
 #custom-spotify,
-#battery,
+#custom-phone_battery,
 #cpu,
-#memory,
-#temperature,
 #backlight,
 #network,
 #pulseaudio,
 #pulseaudio.muted,
-#custom-media,
 #tray,
 #mode,
-#idle_inhibitor,
-#custom-power,
 #custom-updates,
 #mpd,
 #language {
@@ -169,10 +164,6 @@ label:focus {
     background-color: #458588;
 }
 
-#memory {
-    background-color: #9b59b6;
-}
-
 #network {
     background-color: #d65d0e;
     padding-right: 14px;
@@ -188,10 +179,6 @@ label:focus {
 
 #pulseaudio.muted {
     color: #928374;
-}
-
-#custom-power {
-    color: @accent6;
 }
 
 #custom-updates.update-count {
@@ -216,67 +203,10 @@ label:focus {
     background-color: #928374;
 }
 
-#custom-media.custom-vlc {
-    background-color: #ffa000;
-}
-
-#temperature {
-    color: @accent6;
-    /* background-color: #f0932b; */
-}
-
-#temperature.critical {
-    background-color: @critical;
+#custom-phone_battery {
+    font-family: "Sono Monospace";
 }
 
 #tray {
     /* background-color: #505050; */
-}
-
-#idle_inhibitor {
-    background-color: #2d3436;
-}
-
-#idle_inhibitor.activated {
-    background-color: #ecf0f1;
-    color: #2d3436;
-}
-
-#mpd {
-    background-color: #66cc99;
-    color: #2a5c45;
-}
-
-#mpd.disconnected {
-    background-color: #f53c3c;
-}
-
-#mpd.stopped {
-    background-color: #90b1b1;
-}
-
-#mpd.paused {
-    background-color: #51a37a;
-}
-
-#custom-language {
-    /* background: #bbccdd;
-        color: #333333;
-        padding: 0 5px;
-        margin: 4px 3px 6px 3px; */
-    color: @accent5;
-    min-width: 16px;
-}
-
-#custom-separator {
-    color: #606060;
-    margin: 0 0px;
-    font-size: 20px;
-}
-
-#custom-wmname {
-    padding: 0 0 0 0;
-    margin: 4px 0 6px 0;
-    min-width: 36px;
-    font-size: 14px;
 }

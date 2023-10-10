@@ -1,3 +1,6 @@
+# Lock
+exec $lock --image $background
+
 # Variables
 set $mod Mod4
 set $lock ~/dotfiles/scripts/lock.sh
@@ -52,9 +55,6 @@ set $wsF9  19
 set $wsF10 20
 set $wsF11 21
 set $wsF12 22
-
-# Lock
-exec $lock --image $background
 
 # Font
 font pango:Sans 12
