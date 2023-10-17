@@ -135,8 +135,9 @@ bindsym $mod+Home exec --no-startup-id pkill -USR1 redshift
 
 # Idle configuration
 exec swayidle \
-    timeout 300 'exec $lock' \
+    timeout 300 'exec $lock --grace 20' \
     timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+    timeout 1200 'systemctl suspend' \
     before-sleep 'exec $lock'
 
 # Move your focus around

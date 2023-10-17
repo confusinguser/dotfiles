@@ -8,24 +8,46 @@ use std::thread;
 use std::time::Duration;
 
 use tokio::io::{AsyncBufReadExt, BufReader};
-use tokio::process::{self, ChildStdout};
+use tokio::process::{self, Child};
 use tokio::time::Instant;
 
 #[tokio::main]
+#[allow(dead_code)]
 pub async fn main() -> tokio::io::Result<()> {
     const ANIMATION_STEPS: u32 = 10;
     const ANIMATION_STEP_DURATION: Duration = Duration::from_millis(23);
-    let status_listener = tokio::spawn(async move {
-        let stdout = run_command_async("playerctl -F status").unwrap();
+
+    async fn status_listener() {
+        let mut player_used = player_to_use();
+        let mut command = run_command_async(&format!("playerctl -p {} -F status", player_used));
+        let mut stdout = command.stdout.take().unwrap();
         let mut buffer = BufReader::new(stdout).lines();
-        let mut i = -1;
+        let mut i = -1_i32;
         let mut reversed_animation = false;
+
+        let mut artist = String::new();
+        let mut title = String::new();
+        let mut paused = true;
         loop {
             let animation_step_start = Instant::now();
             if i == -1 {
                 let status = buffer.next_line().await;
+                paused = status.unwrap().unwrap() == "Paused";
+                let new_player_used = player_to_use();
+                if new_player_used != player_used {
+                    player_used = new_player_used;
+                    let _ = command.start_kill();
+                    command = run_command_async(&format!("playerctl -p {} -F status", player_used));
+                    stdout = command.stdout.take().unwrap();
+                    buffer = BufReader::new(stdout).lines();
+                    continue;
+                }
+                artist = run_command(&format!("playerctl -p {} -s metadata artist", player_used))
+                    .unwrap_or_default();
+                title = run_command(&format!("playerctl -p {} -s metadata title", player_used))
+                    .unwrap_or_default();
                 reversed_animation = false;
-                if status.unwrap().unwrap() == "Paused" {
+                if paused {
                     reversed_animation = true;
                 }
                 i = 0;
@@ -36,7 +58,7 @@ pub async fn main() -> tokio::io::Result<()> {
                 interweave_play_pause = 1. - interweave_play_pause;
             }
 
-            update(interweave_play_pause);
+            update(interweave_play_pause, &artist, &title, paused);
             i += 1;
             if i as u32 <= ANIMATION_STEPS {
                 thread::sleep(
@@ -48,16 +70,38 @@ pub async fn main() -> tokio::io::Result<()> {
                 i = -1;
             }
         }
-    });
+    }
+
+    let status_listener = tokio::spawn(status_listener());
     let metadata_listener = tokio::spawn(async move {
         let mut last_update = Instant::now();
-        let stdout = run_command_async("playerctl -F metadata").unwrap();
+        let mut player_used = player_to_use();
+        let mut command = run_command_async(&format!("playerctl -p {} -F metadata", player_used));
+        let mut stdout = command.stdout.take().unwrap();
         let mut buffer = BufReader::new(stdout).lines();
         loop {
             let _ = buffer.next_line().await;
             if last_update.elapsed().as_millis() > 100 {
-                let paused = run_command("playerctl status").map_or(false, |out| out == "Paused");
-                update(if paused { 0. } else { 1. });
+                let new_player_used = player_to_use();
+                if new_player_used != player_used {
+                    player_used = new_player_used;
+                    let _ = command.start_kill();
+                    command =
+                        run_command_async(&format!("playerctl -p {} -F metadata", player_used));
+                    stdout = command.stdout.take().unwrap();
+                    buffer = BufReader::new(stdout).lines();
+                    continue;
+                }
+
+                let artist =
+                    run_command(&format!("playerctl -p {} -s metadata artist", player_used))
+                        .unwrap_or_default();
+                let title = run_command(&format!("playerctl -p {} -s metadata title", player_used))
+                    .unwrap_or_default();
+                let paused = run_command(&format!("playerctl -p {} status", player_used))
+                    .map_or(false, |out| out == "Paused");
+
+                update(if paused { 0. } else { 1. }, &artist, &title, paused);
                 last_update = Instant::now();
             }
         }
@@ -67,18 +111,14 @@ pub async fn main() -> tokio::io::Result<()> {
     Ok(())
 }
 
-fn run_command_async(command: &str) -> Option<ChildStdout> {
+fn run_command_async(command: &str) -> Child {
     let mut command_array = command.split(' ');
-    if command_array.clone().count() == 0 {
-        return None;
-    }
 
-    let mut cmd = process::Command::new(command_array.next().unwrap())
+    process::Command::new(command_array.next().unwrap())
         .stdout(Stdio::piped())
         .args(command_array)
         .spawn()
-        .unwrap();
-    cmd.stdout.take()
+        .unwrap()
 }
 
 fn run_command(command: &str) -> Option<String> {
@@ -121,16 +161,15 @@ fn trim_title(title: &str, len: usize) -> String {
     }
 }
 
-fn update(interweave_play_pause: f32) {
+fn update(interweave_play_pause: f32, artist: &str, title: &str, paused: bool) {
     const TITLE_LEN_PLAYING: usize = 30;
     const TITLE_LEN_PAUSED: usize = 15;
 
-    let mut artist = run_command("playerctl -s metadata artist").unwrap_or_default();
-    artist = artist.replacen("Original Broadway Cast", "OBC", 1);
+    let mut artist = artist
+        .to_owned()
+        .replacen("Original Broadway Cast", "OBC", 1);
     artist = artist.replace('\"', "\\\"");
-    let mut title = run_command("playerctl -s metadata title").unwrap_or_default();
-    title = title.replace('\"', "\\\"");
-    let paused = run_command("playerctl status").unwrap_or(String::from("Paused")) == "Paused";
+    let title = title.to_owned().replace('\"', "\\\"");
 
     let title_trimmed_paused = trim_title(title.as_str(), TITLE_LEN_PAUSED);
     let title_trimmed_playing = trim_title(title.as_str(), TITLE_LEN_PLAYING);
@@ -160,4 +199,30 @@ fn update(interweave_play_pause: f32) {
     }
 
     println!("{{\"text\":\"{} \", \"class\":\"{}\"}}", text, css_class);
+}
+
+fn player_to_use() -> String {
+    run_command("playerctl -l")
+        .unwrap_or_default()
+        .lines()
+        .rev()
+        .max_by_key(|line| {
+            let mut out = 0;
+            if run_command(&format!("playerctl -p {} status", line)).unwrap_or_default()
+                == "Playing"
+            {
+                // Prioritize stuff that's playing
+                out += 1000;
+            }
+            if line.starts_with("kde") {
+                // Only do KDEConnect if there is nothing else
+                return -10;
+            }
+            if line.starts_with("spotify") {
+                out -= 5;
+            }
+            out
+        })
+        .unwrap_or_default()
+        .to_owned()
 }

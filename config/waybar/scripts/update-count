@@ -1,14 +1,17 @@
 #!/usr/bin/sh
 
-upgradable=$(paru -Qu | wc -l)
+uptime=$(cat /proc/uptime | awk -F. '{print $1;}')
 #upgradable=$(echo 3)
 
-if [ "$upgradable" == "0" ]; then
-        echo {\"class\": \"hidden\"}
+if [ "$uptime" -gt "500" ]; then
+  echo {\"class\": \"hidden\"}
 else 
-        if [ "$upgradable" == "1" ]; then
-                echo {\"text\": \"1 update\", \"class\": \"update-count\"}
-        else
-                echo {\"text\": \"$upgradable updates!\", \"class\": \"update-count\"}
-        fi
+  upgradable=$(paru -Qu | wc -l)
+  if [ "$upgradable" == "0" ] ; then
+    echo {\"class\": \"hidden\"}
+  elif [ "$upgradable" == "1" ]; then
+    echo {\"text\": \"1 update\", \"class\": \"update-count\"}
+  else
+    echo {\"text\": \"$upgradable updates\", \"class\": \"update-count\"}
+  fi
 fi
