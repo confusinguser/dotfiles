@@ -16,7 +16,7 @@ esac
 
 args="--clock --indicator --effect-blur 5x10 --fade-in 0.2 --ring-color ${colors[0]} --effect-vignette 0.5:0.5 --inside-color ${colors[1]} --text-color ${colors[2]} "
 
-if [ $# -eq 0 ] || [ $0 -ne "--image"]
+if [ $# == 0 ] || [ $0 != "--image" ]
 then
   swaylock ${args} --screenshots --effect-scale 1.1 --scaling center @a
 else
