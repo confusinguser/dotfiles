@@ -114,6 +114,9 @@ lvim.format_on_save = true
 --  end,
 --})
 
+local lspconfig = require('lspconfig');
+lspconfig.spectral.setup {}
+
 local rt = require("rust-tools")
 
 rt.setup({
