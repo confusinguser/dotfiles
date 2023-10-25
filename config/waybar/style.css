@@ -182,11 +182,7 @@ label:focus {
 }
 
 #custom-updates.update-count {
-    background: linear-gradient(
-        90deg,
-        rgba(216, 140, 76, 1) 0%,
-        rgba(254, 180, 71, 1) 100%
-    );
+    background: rgba(230, 160, 74, 1);
 }
 
 #custom-spotify {
@@ -205,6 +201,10 @@ label:focus {
 
 #custom-phone_battery {
     font-family: "Sono Monospace";
+}
+
+#custom-phone_battery.has_been_too_long {
+    color: rgba(255, 255, 0, 1);
 }
 
 #tray {

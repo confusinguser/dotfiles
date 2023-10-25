@@ -11,20 +11,13 @@
         "custom/updates",
         "cpu",
         "pulseaudio",
-        "network",
-        "tray"
+        "network"
     ],
     "sway/workspaces": {
         "all-outputs": true,
         "disable-scroll": true
     },
-    "tray": {
-        "icon-size": 26,
-        "spacing": 7
-    },
     "clock": {
-        // "timezone": "America/New_York",
-        //"format": "{:%H %a %Y-%m-%d}",
         "format": "{:%H:%M:%S %a %d}",
         "interval": 1
     },
@@ -36,13 +29,15 @@
     },
     "network": {
         // "interface": "wlp2*", // (Optional) To force the use of this interface
-        "format-wifi": "",
+        "tooltip": false,
+        "format-wifi": "",
         "format-ethernet": "&#8239;{ifname}: {ipaddr}/{cidr}",
         "format-linked": "&#8239;{ifname} (No IP)",
-        "format-disconnected": "  Disconnected",
+        "format-disconnected": "󰌙  Disconnected",
         "format-alt": "{essid}: {ipaddr} {frequency} GHz"
     },
     "pulseaudio": {
+        "tooltip": false,
         "scroll-step": 1, // %, can be a float
         "format": "{icon} {volume}%",
         //        "format-bluetooth": "{volume}% {icon}",
@@ -59,7 +54,7 @@
     "custom/updates": {
         "format": "{}",
         "exec": "~/dotfiles/config/waybar/scripts/update-count",
-        "interval": 10,
+        "interval": 100,
         "return-type": "json",
         "on-click": "kitty paru -Syu"
     },
