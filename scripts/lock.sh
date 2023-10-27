@@ -18,7 +18,7 @@ args="--clock --indicator --effect-blur 5x10 --fade-in 0.2 --ring-color ${colors
 
 if [ $# == 0 ] || [ $0 != "--image" ]
 then
-  swaylock ${args} --screenshots --effect-scale 1.1 --scaling center @a
+  swaylock ${args} --screenshots --effect-scale 1.1 --scaling center $@
 else
   swaylock ${args} $@
 fi
