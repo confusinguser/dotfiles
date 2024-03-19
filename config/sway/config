@@ -1,3 +1,4 @@
+set $background ~/backgrounds/racoon.jpg
 # Lock
 exec $lock --image $background
 
@@ -9,7 +10,6 @@ set $wifi ~/.config/rofi/modi/nmcli
 set $menu rofi -m $(expr $(swaymsg -t get_tree | jq '.nodes | map([recurse(.nodes[]?, .floating_nodes[]?) | .focused] | any) | index(true)') - 1) -show drun -run-command 'swaymsg exec -- {cmd}'
 set $menu rofi -m $(swaymsg -t get_outputs | jq 'map(select(.active) | .focused) | index(true)') -show drun -run-command 'swaymsg exec -- {cmd}'
 set $screenshot ~/dotfiles/scripts/screenshot.sh
-set $background ~/backgrounds/racoon.jpg
 
 set $cl_high #009ddc
 set $cl_indi #d9d8d8
@@ -82,6 +82,9 @@ exec discord
 # Fix https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
 exec dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 
+# Clipboard history
+exec wl-paste --watch cliphist store
+
 # Input configuration
 input * {
     xkb_layout se
@@ -105,12 +108,15 @@ bindsym $mod+Shift+s exec $screenshot
 
 bindsym $mod+q kill
 bindsym $mod+Shift+c reload
-bindsym $mod+b splith
-bindsym $mod+v splitv
+bindsym $mod+Shift+h splith
+bindsym $mod+Shift+v splitv
 
 bindsym $mod+Shift+m exec $lock
 bindsym $mod+Escape exec $power
 bindsym $mod+End exec $wifi
+
+# Clipboard history
+bindsym $mod+v exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
 
 # Needed when monitor speakers aren't working and when monitor stuck off
 bindsym $mod+Control+l output * dpms off, output * dpms on
@@ -123,8 +129,8 @@ bindsym Control+Space exec dunstctl close
 bindsym Control+Shift+Space exec dunstctl close-all
 
 # Multimedia
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') +1%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') -1%
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%
 bindsym Shift+F3 exec pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') +1%
 bindsym Shift+F2 exec pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') -1%
 bindsym --no-repeat XF86AudioMute exec pactl set-sink-mute $(pacmd list-sinks |awk '/* index:/{print $3}') toggle
@@ -145,7 +151,8 @@ exec swayidle \
     timeout 600 'exec $lock --grace 20' \
     timeout 1200 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
     timeout 1500 'systemctl suspend' \
-    before-sleep 'exec $lock'
+    before-sleep 'exec $lock' \
+    after-resume 'swaymsg "output * dpms on"'
 
 # Move your focus around
 bindsym $mod+$left focus left
