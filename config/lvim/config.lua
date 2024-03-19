@@ -40,7 +40,8 @@ vim.g.loaded_netrwPlugin = 1
 vim.api.nvim_set_keymap("n", "<C-Tab>", "<cmd>BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-w>", "<cmd>BufferKill<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-n>", "<cmd>tabNew<CR>", { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap("n", "<C-a>", "<cmd>NvimTreeToggle<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<C-j>", "<cmd>winc h<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-k>", "<cmd>winc j<CR>", { noremap = true, silent = true })
@@ -60,12 +61,7 @@ vim.keymap.set("n", "<F12>", function()
   dapui.close()
 end)
 
-
-local api = require("nvim-tree.api")
-api.events.subscribe(api.events.Event.TreeAttachedPost, function(bufnr)
-  vim.keymap.set("n", "l", "k", { buffer = bufnr, noremap = true, silent = true, nowait = true })
-  vim.keymap.set("n", "ö", api.node.open.edit, { buffer = bufnr, noremap = true, silent = true, nowait = true })
-end)
+lvim.builtin.nvimtree.setup.on_attach = require("nvim-tree-on-attach").on_attach
 
 lvim.lsp.buffer_mappings.normal_mode['K'] = { vim.lsp.buf.hover, "Show documentation" }
 lvim.lsp.buffer_mappings.normal_mode['<F6>'] = { vim.lsp.buf.rename, "Rename" }
@@ -94,7 +90,7 @@ require 'nvim-treesitter.configs'.setup {
 }
 
 local null_ls = require("null-ls")
-null_ls.setup({
+null_ls.setup {
   sources = {
     null_ls.builtins.formatting.prettier.with({
       extra_args = { "--no-semi", "--tab-width", "4", "--prose-wrap", "always", "--bracket-same-line", "true" }
@@ -105,7 +101,7 @@ null_ls.setup({
     null_ls.builtins.formatting.fish_indent,
     null_ls.builtins.hover.dictionary,
   },
-})
+}
 lvim.format_on_save = true
 --vim.api.nvim_create_autocmd({"BufWritePre"}, {
 --  pattern = {"*.rs"},
@@ -186,3 +182,68 @@ rt.setup({
   },
 })
 rt.inlay_hints.enable()
+
+local fast_event_aware_notify = function(msg, level, opts)
+  if vim.in_fast_event() then
+    vim.schedule(function()
+      vim.notify(msg, level, opts)
+    end)
+  else
+    vim.notify(msg, level, opts)
+  end
+end
+
+local function info(msg)
+  fast_event_aware_notify(msg, vim.log.levels.INFO, {})
+end
+
+local function warn(msg)
+  fast_event_aware_notify(msg, vim.log.levels.WARN, {})
+end
+
+local function err(msg)
+  fast_event_aware_notify(msg, vim.log.levels.ERROR, {})
+end
+
+local sudo_exec = function(cmd, print_output)
+  vim.fn.inputsave()
+  local password = vim.fn.inputsecret("Password: ")
+  vim.fn.inputrestore()
+  if not password or #password == 0 then
+    warn("Invalid password, sudo aborted")
+    return false
+  end
+  local out = vim.fn.system(string.format("sudo -p '' -S %s", cmd), password)
+  if vim.v.shell_error ~= 0 then
+    print("\r\n")
+    err(out)
+    return false
+  end
+  if print_output then print("\r\n", out) end
+  return true
+end
+
+sudo_write = function(tmpfile, filepath)
+  if not tmpfile then tmpfile = vim.fn.tempname() end
+  if not filepath then filepath = vim.fn.expand("%") end
+  if not filepath or #filepath == 0 then
+    err("E32: No file name")
+    return
+  end
+  -- `bs=1048576` is equivalent to `bs=1M` for GNU dd or `bs=1m` for BSD dd
+  -- Both `bs=1M` and `bs=1m` are non-POSIX
+  local cmd = string.format("dd if=%s of=%s bs=1048576",
+    vim.fn.shellescape(tmpfile),
+    vim.fn.shellescape(filepath))
+  -- no need to check error as this fails the entire function
+  vim.api.nvim_exec(string.format("write! %s", tmpfile), true)
+  if sudo_exec(cmd) then
+    info(string.format([[\r\n"%s" written]], filepath))
+    vim.cmd("e!")
+  end
+  vim.fn.delete(tmpfile)
+end
+
+vim.api.nvim_create_user_command("Sw", function()
+  sudo_write(nil, nil);
+end, {})
