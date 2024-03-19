@@ -20,13 +20,18 @@ alias gs='git status'
 alias gaa='git add --all'
 alias gc='git commit'
 alias gca='git add --all && git commit'
-alias gd='git diff | lvim -R'
+function gd
+  git diff $1 | lvim -R
+end
+complete -c gd -w "git diff"
 alias gl='git log'
 alias grs='git restore --staged'
+alias gch='git checkout'
+alias gm='git merge'
 
-alias fzf='find . -type f -not -path "*/\.git/*" | fzf'
-alias fzfe='lvim $(fzf)'
-alias fzfse='se $(fzf)'
+alias fzf='find . -type f -not -path "*/\.git/*" | command fzf'
+alias lfzf='lvim $(fzf)'
+alias sefzf='se $(fzf)'
 
 alias sctl='systemctl'
 alias bctl='bluetoothctl'
