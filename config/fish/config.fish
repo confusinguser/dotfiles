@@ -16,7 +16,7 @@ if status is-interactive
     zoxide init fish --cmd cd | source
 end
 
-export PATH="/home/mk/.local/bin:$PATH"
+export PATH="/home/mk/dotfiles/scripts:/home/mk/.local/bin:$PATH"
 
 function fish_user_key_bindings
     bind \cH backward-kill-path-component
