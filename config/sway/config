@@ -69,14 +69,16 @@ smart_gaps on
 workspace $wsF2
 
 # Default workspaces for common programs
-assign [app_id="^firefox$"] workspace $ws1
+assign [class="^vivaldi-stable$"] workspace $ws1
 assign [class="^discord$"] workspace $wsF1
-assign [class="^spotify$"] workspace $wsF2
+assign [con_mark="^Spotify.+$"] workspace $wsF3
 
 # Autostart
-exec firefox
+exec vivaldi
 exec spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
 exec discord 
+# Wrapper script to hide LAT/LONG
+exec gammastep.sh
 # exec libinput-gestures
 
 # Fix https://github.com/swaywm/sway/wiki#gtk-applications-take-20-seconds-to-start
@@ -99,7 +101,7 @@ bindsym $mod+Return exec kitty
 # For one-hand use
 bindsym $mod+Less exec kitty 
 
-bindsym $mod+f exec firefox
+bindsym $mod+w exec vivaldi
 bindsym $mod+s exec spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
 bindsym $mod+m exec thunderbird
 bindsym $mod+d exec discord
