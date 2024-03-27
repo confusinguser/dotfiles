@@ -1,206 +1,155 @@
+@import "mocha.css";
 * {
     border: none;
-    border-radius: 6px;
-    /* Recommended font sizes: 720p: ~14px, 1080p: ~18px */
-    font-size: 15px; /* Can't select the text for workspaces therefore put here and change everything else back, same with font-family */
-    min-height: 0;
-    font-family: "Sono Monospace";
+    border-radius: 0;
+    font-family: FiraCode Nerd Font;
+    font-weight: bold;
+    font-size: 11px;
+    min-height: 10px;
 }
 
 window#waybar {
-    background-color: rgba(0, 0, 0, 1);
-    /* border-bottom: 0px solid rgba(100, 114, 125, 0.5); */
-    color: #ffffff;
-    transition-property: background-color;
-    transition-duration: 0.5s;
-    border-radius: 0;
+    background: rgba(21, 18, 27, 0);
+    color: @text;
 }
 
-window#waybar.hidden {
-    opacity: 0.2;
-}
-
-/*
-window#waybar.empty {
-background-color: transparent;
-}
-window#waybar.solo {
-background-color: #FFFFFF;
-}*/
-
-window#waybar.termite {
-    background-color: #3f3f3f;
-}
-
-window#waybar.chromium {
-    background-color: #000000;
-    border: none;
+tooltip {
+    border-radius: 10px;
+    border-width: 0px;
+    background: @mantle;
 }
 
 #workspaces button {
-    padding: 1px 0 1px 0;
-    margin: 0px 0 4px 0;
-    background-color: transparent;
-    color: #ebdbb2;
-    min-width: 36px;
-    /* Use box-shadow instead of border so the text isn't offset */
-    /*    box-shadow: inset 0 -3px transparent;*/
-    /* border-radius: 0px; */
+    padding: 5px;
+    color: @surface0;
+    margin-right: 5px;
+}
+
+#workspaces button.active {
+    color: @text;
 }
 
 #workspaces button.focused {
-    background-color: #ebdbb2;
-    color: #282828;
-}
-
-#workspaces button:hover {
-    background: transparent;
-    box-shadow: none;
-}
-
-#workspaces button.focused:hover {
-    background: #ebdbb2;
-}
-
-#workspaces button.urgent {
-    background-color: #eb4d4b;
-}
-
-#mode {
-    background-color: #64727d;
-    border-bottom: 3px solid #ffffff;
-}
-
-#clock,
-#custom-spotify,
-#custom-phone_battery,
-#cpu,
-#backlight,
-#network,
-#pulseaudio,
-#pulseaudio.muted,
-#tray,
-#mode,
-#custom-updates,
-#mpd,
-#language {
-    padding: 1px 6px 0px 6px;
-    margin: 4px 10px 4px 10px;
-    color: @fgcolor;
-    /* background-color: #bbccdd; */
-    background-color: transparent;
-    border-radius: 100px;
-    font-family: "FiraCode Nerd Font";
-    font-size: 15px;
-}
-
-#tray {
-    padding: 0 0 0 0;
-    margin: 0 0 0 0;
-}
-
-#window,
-#workspaces {
-    margin: 0 0px;
-}
-
-/* If workspaces is the leftmost module, omit left margin */
-.modules-left > widget:first-child > #workspaces {
-    margin-left: 0;
-}
-
-/* If workspaces is the rightmost module, omit right margin
-        .modules-right > widget:last-child > #workspaces {
-        margin-right: 0;
-        }*/
-
-#clock {
-    padding: 0 0 0 0;
-    letter-spacing: 1px;
-    font-family: "Antonio";
-    font-weight: 900;
+    color: @rosewater;
+    background: @surface0;
     border-radius: 10px;
 }
 
-#battery {
-    color: @accent5;
+#workspaces button.urgent {
+    color: @crust;
+    background: @mauve;
+    border-radius: 10px;
 }
 
-/* #battery.charging {
-        color: #ffffff;
-        background-color: #26A65B;
-        } */
-
-@keyframes blink {
-    to {
-        background-color: #ffffff;
-        color: #333333;
-    }
+#workspaces button:hover {
+    background: @crust;
+    color: @text;
+    border-radius: 10px;
 }
 
-#battery.critical:not(.charging) {
-    /*    color: @critical;
-                animation-name: blink;
-                animation-duration: 0.5s;
-                animation-timing-function: linear;
-                animation-iteration-count: infinite;
-                animation-direction: alternate;
-                 */
-    background-color: @critical;
-    color: @white;
-}
-
-label:focus {
-    background-color: #ffffff;
-}
-
-#cpu {
-    background-color: #458588;
-}
-
-#network {
-    background-color: #d65d0e;
-    padding-right: 14px;
-}
-
-#network.disconnected {
-    padding-right: 6px;
-}
-
-#pulseaudio {
-    background-color: #b16286;
-}
-
-#pulseaudio.muted {
-    color: #928374;
-}
-
-#custom-updates.update-count {
-    background: rgba(230, 160, 74, 1);
-}
-
-#custom-spotify {
-    color: #122615;
-    font-family: "Montserrat";
-    padding-right: 10px;
-}
-
-#custom-spotify.spotify-playing {
-    background-color: #689d6a;
-}
-
-#custom-spotify.spotify-paused {
-    background-color: #928374;
-}
-
-#custom-phone_battery {
-    font-family: "Sono Monospace";
-}
-
-#custom-phone_battery.has_been_too_long {
-    color: rgba(255, 255, 0, 1);
+#custom-weather,
+#custom-update,
+#clock,
+#mpris,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#battery,
+#pulseaudio,
+#network,
+#bluetooth,
+#workspaces,
+#window,
+#tray,
+#backlight {
+    background: @mantle;
+    padding: 0px 5px;
+    margin: 3px 0px;
+    margin-top: 5px;
+    border: 0;
 }
 
 #tray {
-    /* background-color: #505050; */
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+#workspaces {
+    background: @mantle;
+    border-radius: 10px;
+    margin-left: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+}
+#window{
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#clock {
+    color: @lavender;
+}
+
+#cpu {
+    color: @teal;
+}
+
+#memory {
+    color: @green;
+}
+
+#disk {
+    color: @yellow;
+}
+
+#temperature {
+    color: @peach;
+    border-radius: 0px 10px 10px 0px;
+}
+
+#temperature.critical {
+    color: @red;
+}
+
+
+#custom-weather {
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+
+
+#custom-update{
+    border-radius: 10px;
+    margin-left: 5px ;
+    color: @sky;
+}
+
+#mpris {
+    color: @green;
+    border-radius: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+#bluetooth {
+    color: @blue;
+    border-radius: 10px 0px 0px 10px;
+}
+
+#network {
+    color: @teal;
+}
+#pulseaudio {
+    color: @green;
+}
+#pulseaudio.microphone {
+    color: @yellow;
+}
+#battery {
+    color: @maroon;
+}
+#backlight {
+    color: @red;
 }
