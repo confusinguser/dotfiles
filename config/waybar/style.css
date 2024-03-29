@@ -1,4 +1,4 @@
-@import "mocha.css";
+@import "latte.css";
 * {
     border: none;
     border-radius: 0;
@@ -9,7 +9,7 @@
 }
 
 window#waybar {
-    background: rgba(21, 18, 27, 0);
+    background: @crust;
     color: @text;
 }
 
@@ -19,9 +19,23 @@ tooltip {
     background: @mantle;
 }
 
+#workspaces button:hover {
+    background: @crust;
+    color: @text;
+    border-radius: 10px;
+    box-shadow: inherit;
+    text-shadow: inherit;
+}
+
 #workspaces button {
     padding: 5px;
     color: @surface0;
+    margin-right: 5px;
+}
+
+#workspaces button.current_output {
+    padding: 5px;
+    color: @text;
     margin-right: 5px;
 }
 
@@ -41,16 +55,10 @@ tooltip {
     border-radius: 10px;
 }
 
-#workspaces button:hover {
-    background: @crust;
-    color: @text;
-    border-radius: 10px;
-}
-
 #custom-weather,
 #custom-update,
 #clock,
-#mpris,
+#custom-music,
 #cpu,
 #memory,
 #disk,
@@ -62,17 +70,13 @@ tooltip {
 #workspaces,
 #window,
 #tray,
-#backlight {
+#custom-phone-battery,
+#custom-brightness {
     background: @mantle;
     padding: 0px 5px;
     margin: 3px 0px;
-    margin-top: 5px;
+    /* margin-top: 5px; */
     border: 0;
-}
-
-#tray {
-    border-radius: 10px;
-    margin-right: 5px;
 }
 
 #workspaces {
@@ -82,7 +86,7 @@ tooltip {
     padding-right: 0px;
     padding-left: 5px;
 }
-#window{
+#window {
     border-radius: 10px;
     margin-left: 5px;
     margin-right: 5px;
@@ -90,49 +94,87 @@ tooltip {
 
 #clock {
     color: @lavender;
+    box-shadow:
+        0px -8px 7px -9px rgba(36, 36, 36, 0.75),
+        0px 8px 7px -9px rgba(36, 36, 36, 0.75);
 }
 
 #cpu {
     color: @teal;
+    box-shadow:
+        0px -8px 7px -9px rgba(36, 36, 36, 0.75),
+        0px 8px 7px -9px rgba(36, 36, 36, 0.75);
 }
 
 #memory {
     color: @green;
+    box-shadow:
+        0px -8px 7px -9px rgba(36, 36, 36, 0.75),
+        0px 8px 7px -9px rgba(36, 36, 36, 0.75);
 }
 
 #disk {
     color: @yellow;
+    box-shadow:
+        0px -8px 7px -9px rgba(36, 36, 36, 0.75),
+        0px 8px 7px -9px rgba(36, 36, 36, 0.75);
 }
 
 #temperature {
     color: @peach;
     border-radius: 0px 10px 10px 0px;
+    box-shadow:
+        0px -8px 7px -9px rgba(36, 36, 36, 0.75),
+        0px 8px 7px -9px rgba(36, 36, 36, 0.75);
 }
 
 #temperature.critical {
     color: @red;
 }
 
-
 #custom-weather {
     border-radius: 10px;
     margin-left: 5px;
+    box-shadow:
+        0px -8px 7px -9px rgba(36, 36, 36, 0.75),
+        0px 8px 7px -9px rgba(36, 36, 36, 0.75);
 }
 
-
-
-#custom-update{
+#custom-update {
     border-radius: 10px;
-    margin-left: 5px ;
+    margin-left: 5px;
     color: @sky;
 }
 
-#mpris {
-    color: @green;
+#custom-margin-for-shadow {
+    margin-right: 30px;
+}
+
+#custom-phone-battery {
+    border-radius: 10px;
+    margin-right: 5px;
+}
+
+#custom-music {
     border-radius: 10px;
     margin-right: 5px;
     margin-left: 5px;
+    padding-right: 10px;
+    padding-left: 8px;
 }
+
+#custom-music.spotify-playing {
+    color: @green;
+}
+
+#custom-music.spotify-hidden {
+    opacity: 0;
+}
+
+#custom-music.spotify-paused {
+    color: @surface0;
+}
+
 #bluetooth {
     color: @blue;
     border-radius: 10px 0px 0px 10px;
@@ -150,6 +192,6 @@ tooltip {
 #battery {
     color: @maroon;
 }
-#backlight {
+#custom-brightness {
     color: @red;
 }

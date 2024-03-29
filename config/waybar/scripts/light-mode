@@ -4,4 +4,4 @@ gsettings set org.gnome.desktop.interface gtk-theme "Catppuccin-Latte-Standard-L
 gsettings set org.gnome.desktop.interface icon-theme "WhiteSur"
 #change the background image and be cool about it ;)
 killall swaybg
-swaybg -m fill -i ~/Pictures/wallpapers/axo2.png
+swaybg -m fill -i ~/Pictures/backgrounds/satellite.jpg
