@@ -39,22 +39,22 @@ set $ws3   3
 set $ws4   4
 set $ws5   5
 set $ws6   6
-# set $ws7   7
-# set $ws8   8
-# set $ws9   9
-# set $ws0   10
-set $wsF1  7
-set $wsF2  8
-set $wsF3  9
-set $wsF4  10
-# set $wsF5  15
-# set $wsF6  16
-# set $wsF7  17
-# set $wsF8  18
-# set $wsF9  19
-# set $wsF10 20
-# set $wsF11 21
-# set $wsF12 22
+set $ws7   7
+set $ws8   8
+set $ws9   9
+set $ws0   10
+set $wsF1  11
+set $wsF2  12
+set $wsF3  13
+set $wsF4  14
+set $wsF5  15
+set $wsF6  16
+set $wsF7  17
+set $wsF8  18
+set $wsF9  19
+set $wsF10 20
+set $wsF11 21
+set $wsF12 22
 
 # Font
 font pango:Sans 12
@@ -71,7 +71,7 @@ workspace $wsF2
 assign [title=".*Vivaldi"] workspace $ws1
 
 assign [class="^discord$"] workspace $wsF1
-assign [title=".*[sS]potify.*"] workspace $wsF3
+assign [title=".*[sS]potify.*"] workspace $wsF2
 
 # Autostart
 exec vivaldi

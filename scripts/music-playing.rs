@@ -148,11 +148,14 @@ fn trim_title(title: &str, len: usize) -> String {
     }
 
     if trimmed {
-        while forbidden_edge_chars
-            .iter()
-            .any(|&forbidden| forbidden == title.chars().last().unwrap_or_default())
+        let mut last_char = title.chars().last().unwrap_or_default();
+        while last_char.is_ascii_digit()
+            || forbidden_edge_chars
+                .iter()
+                .any(|&forbidden| forbidden == last_char)
         {
             title.pop();
+            last_char = title.chars().last().unwrap_or_default()
         }
 
         title + "…"
