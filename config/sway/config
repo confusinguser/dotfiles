@@ -74,7 +74,7 @@ assign [class="^discord$"] workspace $wsF1
 assign [title=".*[sS]potify.*"] workspace $wsF2
 
 # Autostart
-exec vivaldi
+exec vivaldi-snapshot --enable-features=UseOzonePlatform --ozone-platform=wayland --use-cmd-decoder=validating --use-gl=desktop
 exec spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
 exec discord 
 # Wrapper script to hide LAT/LONG
@@ -101,9 +101,8 @@ bindsym $mod+Return exec kitty
 # For one-hand use
 bindsym $mod+Less exec kitty 
 
-bindsym $mod+w exec vivaldi
+bindsym $mod+w exec vivaldi-snapshot --enable-features=UseOzonePlatform --ozone-platform=wayland --use-cmd-decoder=validating --use-gl=desktop
 bindsym $mod+s exec spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
-bindsym $mod+m exec thunderbird
 bindsym $mod+d exec discord
 
 bindsym $mod+Shift+s exec $screenshot
