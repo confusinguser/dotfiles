@@ -151,7 +151,7 @@
         "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
     },
     "pulseaudio#output": {
-        "format": "{icon} {volume}%",
+        "format": "{icon} {volume:02}%",
         "format-muted": " Muted",
         "on-click-right": "~/.config/waybar/scripts/volume --toggle",
         "on-click": "pavucontrol",
@@ -172,7 +172,7 @@
     },
     "pulseaudio#input": {
         "format": "{format_source}",
-        "format-source": " {volume}%",
+        "format-source": " {volume:02}%",
         "format-source-muted": " Muted",
         "on-click-right": "~/.config/waybar/scripts/volume --toggle-mic",
         "on-click": "pavucontrol",
