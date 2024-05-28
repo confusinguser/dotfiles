@@ -211,11 +211,13 @@ fn player_to_use() -> String {
         .rev()
         .max_by_key(|line| {
             let mut out = 0;
-            if run_command(&format!("playerctl -p {} status", line)).unwrap_or_default()
-                == "Playing"
+            match run_command(&format!("playerctl -p {} status", line))
+                .unwrap_or_default()
+                .as_str()
             {
-                // Prioritize stuff that's playing
-                out += 1000;
+                "Playing" => out += 1000, // Prioritize stuff that's playing
+                "Stopped" => out -= 1000,
+                _ => {}
             }
             if line.starts_with("kde") {
                 // Only do KDEConnect if there is nothing else

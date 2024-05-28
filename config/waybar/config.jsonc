@@ -50,7 +50,7 @@
         "format": " {:%T}",
         "interval": 1,
         "format-alt": " {:%A, %B %d, %Y, %T} ",
-        "tooltip-format": "<tt>{calendar}></tt>",
+        "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
             "mode": "month",
             "mode-mon-col": 3,
@@ -117,7 +117,7 @@
     },
     "temperature": {
         "interval": 1,
-        "thermal-zone": 1,
+        "thermal-zone": 2,
         "format": " {temperatureC}°C",
         "critical-threshold": 50,
         "format-critical": " {temperatureC}°C",

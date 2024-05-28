@@ -23,6 +23,7 @@ set $up l
 set $right odiaeresis
 
 # Output configuration
+output DP-1 disable
 output * bg $background fill
 
 bindsym $mod+period exec ~/dotfiles/config/rofi/launcher/launcher.sh # .
@@ -74,7 +75,7 @@ assign [class="^discord$"] workspace $wsF1
 assign [title=".*[sS]potify.*"] workspace $wsF2
 
 # Autostart
-exec vivaldi-snapshot --enable-features=UseOzonePlatform --ozone-platform=wayland --use-cmd-decoder=validating --use-gl=desktop
+# Vivaldi starts with systemd-service
 exec spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
 exec discord 
 # Wrapper script to hide LAT/LONG
