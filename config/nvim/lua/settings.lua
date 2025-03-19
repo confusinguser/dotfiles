@@ -4,7 +4,6 @@ local o = vim.o
 o.termguicolors = true
 -- o.background = 'dark'
 
-o.notimeout = true
 o.ttimeout = true
 o.updatetime = 300
 

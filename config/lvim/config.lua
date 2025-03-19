@@ -93,7 +93,7 @@ local null_ls = require("null-ls")
 null_ls.setup {
   sources = {
     null_ls.builtins.formatting.prettier.with({
-      extra_args = { "--no-semi", "--tab-width", "4", "--prose-wrap", "always", "--bracket-same-line", "true" }
+      extra_args = { "--no-semi", "--print-width", "120", "--html-whitespace-sensitivity", "ignore" }
     }),
     -- null_ls.builtins.completion.spell,
     null_ls.builtins.diagnostics.fish,

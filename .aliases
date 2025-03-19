@@ -5,6 +5,8 @@ alias cc='cargo check'
 alias ccl='cargo clippy'
 alias cf='cargo clippy --fix'
 
+alias scala='scala-cli'
+
 alias p='paru'
 alias pl='paru -Qi'
 alias ps='paru -Si'
@@ -33,6 +35,8 @@ alias fzf='find . -type f -not -path "*/\.git/*" | command fzf'
 alias lfzf='lvim $(fzf)'
 alias sefzf='se $(fzf)'
 
+alias rip='rip --graveyard /home/mk/.trash/'
+
 alias sctl='systemctl'
 alias bctl='bluetoothctl'
 alias l='lvim'
@@ -42,4 +46,8 @@ alias o='open'
 
 alias adios='systemctl poweroff'
 alias se='sudoedit'
-alias ls='exa -a -l --group-directories-first --git --no-user --no-time'
+alias ls='exa -a -l --group-directories-first --git --icons --no-user --no-time'
+
+function jd 
+    cd $(jdfs path $argv)
+end

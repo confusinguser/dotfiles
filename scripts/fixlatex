@@ -1,0 +1,33 @@
+#!/bin/python3
+
+import re
+import pyperclip
+
+
+def fix_latex(text):
+    # Remove "- \n"
+    text = re.sub(r"- \n", "", text)
+
+    # Replace å, ä, ö with LaTeX equivalents
+    text = text.replace("˚a", "å").replace("¨a", "ä").replace("¨o", "ö")
+    text = text.replace("˚A", "Å").replace("¨A", "Ä").replace("¨O", "Ö")
+    text = text.replace(" ̊a", "å").replace(" ̈a", "ä").replace(" ̈o", "ö")
+    text = text.replace(" ̊A", "Å").replace(" ̈A", "Ä").replace(" ̈O", "Ö")
+
+    # Remove single newlines, keep double newlines for paragraph breaks
+    text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
+
+    return text
+
+
+if __name__ == "__main__":
+    # Get text from clipboard
+    raw_text = pyperclip.paste()
+
+    # Fix LaTeX formatting
+    fixed_text = fix_latex(raw_text)
+
+    # Copy back to clipboard
+    pyperclip.copy(fixed_text)
+
+    print("Fixed LaTeX text copied to clipboard!")
