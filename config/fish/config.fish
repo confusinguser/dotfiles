@@ -9,6 +9,7 @@
 #    export XDG_SESSION_TYPE=wayland
 #    sway
 #end
+
 function cd
     _ZO_DATA_DIR=/home/mk/.local/share/zoxide HOME=/home/mk/Documents/ z $argv
 end

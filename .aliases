@@ -42,11 +42,12 @@ alias bctl='bluetoothctl'
 alias l='lvim'
 alias e='echo'
 alias o='open'
-
+alias ts='tailscale'
 
 alias adios='systemctl poweroff'
 alias se='sudoedit'
 alias ls='exa -a -l --group-directories-first --git --icons --no-user --no-time'
+alias tree='exa --tree'
 
 function jd 
     cd $(jdfs path $argv)

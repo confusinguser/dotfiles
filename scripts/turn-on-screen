@@ -1,0 +1,1 @@
+qdbus org.kde.kglobalaccel /component/org_kde_powerdevil invokeShortcut "Turn On Screen"

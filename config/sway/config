@@ -22,7 +22,11 @@ set $down k
 set $up l
 set $right odiaeresis
 
+# Lock
+exec $lock --image $background
+
 # Output configuration
+output DP-1 disable
 output * bg $background fill
 
 bindsym $mod+period exec ~/dotfiles/config/rofi/launcher/launcher.sh # .
@@ -101,10 +105,13 @@ bindsym $mod+Return exec kitty
 # For one-hand use
 bindsym $mod+Less exec kitty 
 
-bindsym $mod+w exec vivaldi
+bindsym $mod+w exec vivaldi-snapshot --enable-features=VaapiVideoDecoder,VaapiIgnoreDriverChecks,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE,UseOzonePlatform --ozone-platform=wayland --use-cmd-decoder=validating --use-gl=desktop
 bindsym $mod+s exec spotify --enable-features=UseOzonePlatform --ozone-platform=wayland
 bindsym $mod+m exec thunderbird
 bindsym $mod+d exec discord
+
+# Emoji picker
+bindsym $mod+Shift+period exec bemoji
 
 bindsym $mod+Shift+s exec $screenshot
 
@@ -131,15 +138,15 @@ bindsym Control+Space exec dunstctl close
 bindsym Control+Shift+Space exec dunstctl close-all
 
 # Multimedia
-bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%
-bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%
-bindsym Shift+F3 exec pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') +1%
-bindsym Shift+F2 exec pactl set-sink-volume $(pacmd list-sinks |awk '/* index:/{print $3}') -1%
-bindsym --no-repeat XF86AudioMute exec pactl set-sink-mute $(pacmd list-sinks |awk '/* index:/{print $3}') toggle
-bindsym --no-repeat XF86AudioPlay exec playerctl play-pause
-bindsym --no-repeat XF86AudioPause exec playerctl play-pause
-bindsym --no-repeat XF86AudioNext exec playerctl next
-bindsym --no-repeat XF86AudioPrev exec playerctl previous
+bindsym --locked XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%
+bindsym --locked Shift+F3 exec pactl set-sink-volume @DEFAULT_SINK@ +1%
+bindsym --locked Shift+F2 exec pactl set-sink-volume @DEFAULT_SINK@ -1%
+bindsym --no-repeat --locked XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym --no-repeat --locked XF86AudioPlay exec playerctl play-pause
+bindsym --no-repeat --locked XF86AudioPause exec playerctl play-pause
+bindsym --no-repeat --locked XF86AudioNext exec playerctl next
+bindsym --no-repeat --locked XF86AudioPrev exec playerctl previous
 
 # Brightness controls
 bindsym --locked XF86MonBrightnessUp exec light -A 10
@@ -271,3 +278,9 @@ bindsym $mod+Shift+e mode "$mode_system"
 # exec_always ~/dotfiles/scripts/waybar_launch
 
 # include ~/.config/sway/$(hostname)/*
+
+
+output HEADLESS-1 {
+  pos 1920,0
+  mode 1920x1080
+}

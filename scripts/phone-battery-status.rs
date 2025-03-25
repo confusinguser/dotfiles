@@ -29,7 +29,7 @@ pub async fn main() -> tokio::io::Result<()> {
     let has_been_too_long_clone = has_been_too_long.clone();
     let charge_clone = charge.clone();
     let battery_percentage_listener = tokio::spawn(async move {
-        let stdout = run_command_async("gdbus monitor --session --dest org.kde.kdeconnect --object-path /modules/kdeconnect/devices/4eb553e1_dca2_40d6_a0f7_3123cf4d641c/battery").unwrap();
+        let stdout = run_command_async("gdbus monitor --session --dest org.kde.kdeconnect --object-path /modules/kdeconnect/devices/2a9d4d71_3d40_4920_b5ee_527f4315703d/battery").unwrap();
         let mut buffer = BufReader::new(stdout).lines();
         loop {
             let line = buffer
