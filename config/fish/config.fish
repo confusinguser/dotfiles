@@ -18,7 +18,7 @@ if status is-interactive
     starship init fish | source
     cat ~/dotfiles/.aliases | source
     zoxide init fish --cmd z | source
-    . $HOME/export-esp.sh
+    #. $HOME/export-esp.sh
 end
 
 export PATH="/home/mk/dotfiles/scripts:/home/mk/.cargo/bin:/home/mk/.local/bin:$PATH"
