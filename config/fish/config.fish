@@ -27,7 +27,6 @@ function fish_user_key_bindings
     bind \cH backward-kill-path-component
     bind § forward-char
     bind \cs backward-kill-line
-    bind \es 'fish_commandline_prepend doas'
     bind \[3\;5~ kill-word
     bind -k backspace kill-selection or backward-delete-char
 end
