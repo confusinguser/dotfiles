@@ -4,27 +4,6 @@
 -- Forum: https://www.reddit.com/r/lunarvim/
 -- Discord: https://discord.com/invite/Xb9B4Ny
 
-lvim.plugins = {
-  { "simrat39/rust-tools.nvim" },
-  {
-    "saecki/crates.nvim",
-    version = "v0.3.0",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("crates").setup {
-        null_ls = {
-          enabled = true,
-          name = "crates.nvim",
-        },
-        popup = {
-          border = "rounded",
-        },
-      }
-    end,
-  },
-}
-
-
 lvim.keys.normal_mode["j"] = "h"
 lvim.keys.normal_mode["k"] = "gj"
 lvim.keys.normal_mode["l"] = "gk"
@@ -33,9 +12,6 @@ lvim.keys.visual_mode["j"] = "h"
 lvim.keys.visual_mode["k"] = "gj"
 lvim.keys.visual_mode["l"] = "gk"
 lvim.keys.visual_mode["ö"] = "l"
-
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
 
 vim.api.nvim_set_keymap("n", "<C-Tab>", "<cmd>BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-S-Tab>", "<cmd>BufferLineCyclePrev<CR>", { noremap = true, silent = true })
@@ -49,19 +25,6 @@ vim.api.nvim_set_keymap("n", "<C-l>", "<cmd>winc k<CR>", { noremap = true, silen
 vim.api.nvim_set_keymap("n", "<C-ö>", "<cmd>winc l<CR>", { noremap = true, silent = true })
 
 vim.api.nvim_set_keymap("n", "<C-S-v>", "<C-v>", { noremap = true, silent = true })
-
-local dap = require 'dap'
-local dapui = require 'dapui'
-vim.keymap.set("n", "<F1>", dap.step_over)
-vim.keymap.set("n", "<F2>", dap.step_into)
-vim.keymap.set("n", "<F7>", dap.continue)
-vim.keymap.set("n", "<F8>", dap.toggle_breakpoint)
-vim.keymap.set("n", "<F12>", function()
-  dap.disconnect()
-  dapui.close()
-end)
-
-lvim.builtin.nvimtree.setup.on_attach = require("nvim-tree-on-attach").on_attach
 
 lvim.lsp.buffer_mappings.normal_mode['K'] = { vim.lsp.buf.hover, "Show documentation" }
 lvim.lsp.buffer_mappings.normal_mode['<F6>'] = { vim.lsp.buf.rename, "Rename" }
@@ -77,31 +40,18 @@ vim.opt.whichwrap:remove({ "h", "l" })
 vim.opt.completeopt = { 'menuone', 'noselect', 'noinsert' }
 vim.opt.wrap = true
 vim.opt.linebreak = true
-vim.api.nvim_set_option('updatetime', 300)
+vim.api.nvim_set_option('updatetime', 1000)
 
 -- use treesitter folding
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.opt.foldmethod = "expr"
+-- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
-require 'nvim-treesitter.configs'.setup {
-  ensure_installed = { "svelte", "typescript", "ron", "wgsl", "wgsl_bevy", "javascript", "css", "rust", "lua" },
-  auto_install = true,
-  highlight = { enable = true },
-}
+-- require 'nvim-treesitter.configs'.setup {
+--   ensure_installed = { "svelte", "typescript", "ron", "wgsl", "wgsl_bevy", "javascript", "css", "rust", "lua" },
+--   auto_install = true,
+--   highlight = { enable = true },
+-- }
 
-local null_ls = require("null-ls")
-null_ls.setup {
-  sources = {
-    null_ls.builtins.formatting.prettier.with({
-      extra_args = { "--no-semi", "--print-width", "120", "--html-whitespace-sensitivity", "ignore" }
-    }),
-    -- null_ls.builtins.completion.spell,
-    null_ls.builtins.diagnostics.fish,
-    -- null_ls.builtins.diagnostics.php,
-    null_ls.builtins.formatting.fish_indent,
-    null_ls.builtins.hover.dictionary,
-  },
-}
 lvim.format_on_save = true
 --vim.api.nvim_create_autocmd({"BufWritePre"}, {
 --  pattern = {"*.rs"},
@@ -109,79 +59,6 @@ lvim.format_on_save = true
 --    vim.lsp.buf.format()
 --  end,
 --})
-
-local lspconfig = require('lspconfig');
-lspconfig.spectral.setup {}
-
-local rt = require("rust-tools")
-
-rt.setup({
-  capabilities = require("lvim.lsp").common_capabilities(),
-  tools = {
-    executor = require("rust-tools/executors").termopen, -- can be quickfix or termopen
-    reload_workspace_from_cargo_toml = true,
-    runnables = {
-      use_telescope = true,
-    },
-    inlay_hints = {
-      auto = true,
-      only_current_line = false,
-      show_parameter_hints = false,
-      parameter_hints_prefix = "<-",
-      other_hints_prefix = "=>",
-      max_len_align = false,
-      max_len_align_padding = 1,
-      right_align = false,
-      right_align_padding = 7,
-      highlight = "Comment",
-    },
-    hover_actions = {
-      border = "rounded",
-    },
-    on_initialized = function()
-      vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
-        pattern = { "*.rs" },
-        callback = function()
-          local _, _ = pcall(vim.lsp.codelens.refresh)
-        end,
-      })
-    end,
-  },
-  server = {
-    on_attach = function(client, bufnr)
-      require("lvim.lsp").common_on_attach(client, bufnr)
-      -- Hover actions
-      vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
-      -- Code action groups
-      vim.keymap.set("n", "<M-CR>", rt.code_action_group.code_action_group, { buffer = bufnr })
-    end,
-    settings = {
-      ["rust-analyzer"] = {
-        check = { command = "clippy" },
-        cargo = { features = "all" },
-        imports = { prefix = "self", granularity = { group = "module", enforce = true } },
-        assist = { emitMustUse = true },
-        lens = { location = "above_whole_item" },
-        semanticHighlighting = {
-          operator = { specialization = { enable = true } },
-          puncutation = {
-            enable = true,
-            specialization = { enable = true },
-            separate = { macro = { bang = true } }
-          }
-        },
-      }
-    }
-  },
-  dap = {
-    adapter = {
-      type = "executable",
-      command = "lldb-vscode",
-      name = "rt_lldb",
-    },
-  },
-})
-rt.inlay_hints.enable()
 
 local fast_event_aware_notify = function(msg, level, opts)
   if vim.in_fast_event() then
@@ -223,7 +100,7 @@ local sudo_exec = function(cmd, print_output)
   return true
 end
 
-sudo_write = function(tmpfile, filepath)
+local sudo_write = function(tmpfile, filepath)
   if not tmpfile then tmpfile = vim.fn.tempname() end
   if not filepath then filepath = vim.fn.expand("%") end
   if not filepath or #filepath == 0 then
