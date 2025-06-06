@@ -25,7 +25,7 @@ export PATH="/home/mk/dotfiles/scripts:/home/mk/.cargo/bin:/home/mk/.local/bin:$
 
 function fish_user_key_bindings
     bind \cH backward-kill-path-component
-    bind § accept-autosuggestion
+    bind § forward-char
     bind \cs backward-kill-line
     bind \es 'fish_commandline_prepend doas'
     bind \[3\;5~ kill-word
