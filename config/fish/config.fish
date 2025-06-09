@@ -16,7 +16,7 @@ end
 
 if status is-interactive
     starship init fish | source
-    cat ~/dotfiles/.aliases | source
+    cat ~/.aliases | source
     zoxide init fish --cmd z | source
     #. $HOME/export-esp.sh
 end

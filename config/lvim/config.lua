@@ -30,14 +30,10 @@ lvim.lsp.buffer_mappings.normal_mode['K'] = { vim.lsp.buf.hover, "Show documenta
 lvim.lsp.buffer_mappings.normal_mode['<F6>'] = { vim.lsp.buf.rename, "Rename" }
 lvim.builtin.which_key.mappings['rc'] = { vim.lsp.buf.incoming_calls, "Incoming Calls" }
 
-local telescope = require('telescope.builtin')
-lvim.builtin.which_key.mappings['td'] = { telescope.diagnostics, "Diagnostics" }
-
 vim.keymap.set("n", "<M-d>", function() vim.diagnostic.open_float(nil, { focusable = false }) end)
 
--- Stop cursor continuing on next line
-vim.opt.whichwrap:remove({ "h", "l" })
-vim.opt.completeopt = { 'menuone', 'noselect', 'noinsert' }
+-- Stop cursor from wrapping on navigation keys
+vim.opt.whichwrap = "b,s"
 vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.api.nvim_set_option('updatetime', 1000)
@@ -70,15 +66,15 @@ local fast_event_aware_notify = function(msg, level, opts)
   end
 end
 
-local function info(msg)
+local info = function(msg)
   fast_event_aware_notify(msg, vim.log.levels.INFO, {})
 end
 
-local function warn(msg)
+local warn = function(msg)
   fast_event_aware_notify(msg, vim.log.levels.WARN, {})
 end
 
-local function err(msg)
+local err = function(msg)
   fast_event_aware_notify(msg, vim.log.levels.ERROR, {})
 end
 
@@ -101,6 +97,49 @@ local sudo_exec = function(cmd, print_output)
 end
 
 local sudo_write = function(tmpfile, filepath)
+  if not tmpfile then tmpfile = vim.fn.tempname() end
+  if not filepath then filepath = vim.fn.expand("%") end
+  if not filepath or #filepath == 0 then
+    err("E32: No file name")
+    return
+  end
+  -- `bs=1048576` is equivalent to `bs=1M` for GNU dd or `bs=1m` for BSD dd
+  -- Both `bs=1M` and `bs=1m` are non-POSIX
+  local cmd = string.format("dd if=%s of=%s bs=1048576",
+    vim.fn.shellescape(tmpfile),
+    vim.fn.shellescape(filepath))
+  -- no need to check error as this fails the entire function
+  vim.api.nvim_exec(string.format("write! %s", tmpfile), true)
+  if sudo_exec(cmd) then
+    info(string.format([[\r\n"%s" written]], filepath))
+    vim.cmd("e!")
+  end
+  vim.fn.delete(tmpfile)
+end
+
+vim.api.nvim_create_user_command("Sw", function()
+  sudo_write(nil, nil);
+end, {})
+
+sudo_exec = function(cmd, print_output)
+  vim.fn.inputsave()
+  local password = vim.fn.inputsecret("Password: ")
+  vim.fn.inputrestore()
+  if not password or #password == 0 then
+    warn("Invalid password, sudo aborted")
+    return false
+  end
+  local out = vim.fn.system(string.format("sudo -p '' -S %s", cmd), password)
+  if vim.v.shell_error ~= 0 then
+    print("\r\n")
+    err(out)
+    return false
+  end
+  if print_output then print("\r\n", out) end
+  return true
+end
+
+sudo_write = function(tmpfile, filepath)
   if not tmpfile then tmpfile = vim.fn.tempname() end
   if not filepath then filepath = vim.fn.expand("%") end
   if not filepath or #filepath == 0 then

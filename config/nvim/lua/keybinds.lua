@@ -53,6 +53,10 @@ nmap("j", "h")
 nmap("k", "gj")
 nmap("l", "gk")
 nmap("ö", "l")
+vmap("j", "h")
+vmap("k", "gj")
+vmap("l", "gk")
+vmap("ö", "l")
 
 local function show_documentation()
     local filetype = vim.bo.filetype

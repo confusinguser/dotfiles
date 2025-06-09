@@ -39,7 +39,7 @@ alias rip='rip --graveyard /home/mk/.trash/'
 
 alias sctl='systemctl'
 alias bctl='bluetoothctl'
-alias l='lvim'
+alias l='nvim'
 alias e='echo'
 alias o='open'
 alias ts='tailscale'
