@@ -1,0 +1,10 @@
+[Unit]
+Description=Run plasma theme update every 10 minutes and on wake
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

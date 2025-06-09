@@ -1,0 +1,27 @@
+#!/bin/bash
+
+LAT="55.7"
+LON="13.2"
+
+# Get current time as seconds since midnight
+now=$(date +%s)
+
+# Convert HH:MM to timestamp for today
+to_timestamp() {
+    local hm=$1
+    local h=${hm%:*}
+    local m=${hm#*:}
+    date -d "today $h:$m" +%s
+}
+
+sunrise_str=$(sunwait list rise angle 0 ${LAT}N ${LON}E | awk '{print $1}')
+sunset_str=$(sunwait list set angle 0 ${LAT}N ${LON}E | awk '{print $1}')
+
+sunrise=$(to_timestamp "$sunrise_str")
+sunset=$(to_timestamp "$sunset_str")
+
+if (( now > sunrise && now < sunset )); then
+    plasma-apply-colorscheme BreezeLight
+else
+    plasma-apply-colorscheme Sweet
+fi

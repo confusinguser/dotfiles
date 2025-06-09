@@ -1,0 +1,7 @@
+[Unit]
+Description=Set KDE Plasma theme based on sunrise/sunset
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/scripts/update-plasma-theme
