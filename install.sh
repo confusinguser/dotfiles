@@ -15,7 +15,6 @@ sudo ln -sf "$HOME/dotfiles/scripts/plasma-theme-resume" /usr/lib/systemd/system
 systemctl --user daemon-reexec
 systemctl --user enable --now plasma-theme.timer
 
-
 mkdir /etc/wireguard
 sudo chown $USER /etc/wireguard
 sudo chmod 755 /etc/wireguard

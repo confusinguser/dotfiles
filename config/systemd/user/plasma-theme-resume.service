@@ -1,0 +1,10 @@
+[Unit]
+Description=Update Plasma theme on resume
+After=suspend.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/dotfiles/scripts/update-plasma-theme
+
+[Install]
+WantedBy=suspend.target

@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+
+import os
+import re
+import argparse
+
+def rename_johnny_decimal(base_path, dry_run=False):
+    """
+    Rename folders and files according to the Johnny Decimal system.
+    If dry_run is True, only print the intended changes without applying them.
+    """
+    for root, dirs, files in os.walk(base_path, topdown=False):
+        parent_folder = os.path.basename(root)
+        grandparent_folder = os.path.basename(os.path.dirname(root))
+
+        area_match = re.match(r'^(\d{2})-(\d{2})', grandparent_folder)  # "40-49 Something"
+        subfolder_match = re.match(r'^(\d{2}) (.+)', parent_folder)     # "33 Finance"
+
+        if area_match and subfolder_match:
+            area_start = int(area_match.group(1))  # e.g. 40
+            sub_number = int(subfolder_match.group(1)) % 10  # keep second digit (3 from 33)
+            area_name = subfolder_match.group(2)   # "Finance"
+
+            new_prefix = area_start + sub_number   # 40 + 3 = 43
+            new_name = f"{new_prefix:02d} {area_name}"
+
+            if parent_folder != new_name:
+                rename_item(os.path.dirname(root), parent_folder, new_name, dry_run, is_dir=True)
+
+    for root, dirs, files in os.walk(base_path, topdown=False):
+        parent_folder = os.path.basename(root)
+        for dir_name in dirs:
+            new_name = process_name(dir_name, parent_folder)
+            if new_name and new_name != dir_name:
+                rename_item(root, dir_name, new_name, dry_run, is_dir=True)
+
+        for file_name in files:
+            new_name = process_name(file_name, parent_folder)
+            if new_name and new_name != file_name:
+                rename_item(root, file_name, new_name, dry_run, is_dir=False)
+
+
+
+def process_name(name, parent_folder):
+    """
+    Rename the given name based on the parent folder's prefix if it matches the Johnny Decimal system.
+    """
+    parent_match = re.match(r'^(\d{2})', parent_folder)  # Match "xx" at the start of the parent folder name
+    name_match = re.match(r'^(\d{2})\.(\d{2})', name)    # Match "xx.xx" at the start of the file or folder name
+
+    if parent_match and name_match:
+        parent_prefix = parent_match.group(1)
+        rest_of_name = name[5:]  # Exclude the first "xx.xx"
+        return f"{parent_prefix}.{name_match.group(2)}{rest_of_name}"
+
+    return None
+
+
+def rename_item(root, old_name, new_name, dry_run, is_dir):
+    old_path = os.path.join(root, old_name)
+    new_path = os.path.join(root, new_name)
+    if dry_run:
+        print(f"[DRY-RUN] {'Directory' if is_dir else 'File'}: {old_path} -> {new_path}")
+    else:
+        print(f"Renaming {'directory' if is_dir else 'file'}: {old_path} -> {new_path}")
+        os.rename(old_path, new_path)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Rename folders and files according to the Johnny Decimal system.")
+    parser.add_argument("base_directory", help="Path to the root directory to process.")
+    parser.add_argument("--dry-run", action="store_true", help="Simulate the changes without renaming.")
+    args = parser.parse_args()
+
+    rename_johnny_decimal(args.base_directory, dry_run=args.dry_run)

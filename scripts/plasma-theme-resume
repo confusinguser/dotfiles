@@ -1,0 +1,4 @@
+#!/bin/bash
+if [ "$1" = post ]; then
+  su - mk -c "DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u mk)/bus $HOME/dotfiles/scripts/update-plasma-theme"
+fi
