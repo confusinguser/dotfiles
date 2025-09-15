@@ -8,6 +8,9 @@ SETUVAR --export --path PATH:/home/mk/dotfiles/scripts\x1e/home/mk/\x2ecargo/bin
 SETUVAR --export SUDO_EDITOR:/bin/nvim
 SETUVAR --export VISUAL:/home/mk/\x2elocal/bin/lvim
 SETUVAR __fish_initialized:3800
+SETUVAR _fisher_aohorodnyk_2F_fish_2D_autovenv_files:\x7e/\x2econfig/fish/conf\x2ed/autovenv\x2efish
+SETUVAR _fisher_plugins:aohorodnyk/fish\x2dautovenv
+SETUVAR _fisher_upgraded_to_4_4:\x1d
 SETUVAR fish_color_autosuggestion:555\x1ebrblack
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:blue

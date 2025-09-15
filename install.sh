@@ -11,9 +11,11 @@ mkdir -p ~/.config/systemd/user
 ln -sf "$HOME/dotfiles/config/systemd/user/plasma-theme.service" ~/.config/systemd/user/plasma-theme.service
 ln -sf "$HOME/dotfiles/config/systemd/user/plasma-theme.timer" ~/.config/systemd/user/plasma-theme.timer
 sudo ln -sf "$HOME/dotfiles/scripts/plasma-theme-resume" /usr/lib/systemd/system-sleep/plasma-theme-resume
+sudo ln -s ~/dotfiles/services/* /etc/systemd/system/
 
 systemctl --user daemon-reexec
 systemctl --user enable --now plasma-theme.timer
+sudo systemctl enable --now conservation-mode.service
 
 mkdir /etc/wireguard
 sudo chown $USER /etc/wireguard

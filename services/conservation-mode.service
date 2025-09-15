@@ -1,0 +1,12 @@
+[Unit]
+Description=Set Lenovo conservation mode (with delay)
+After=multi-user.target
+
+[Service]
+Type=oneshot
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/bin/bash -c "echo 1 > /sys/devices/pci0000:00/0000:00:14.3/PNP0C09:00/VPC2004:00/conservation_mode"
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
