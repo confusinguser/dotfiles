@@ -1,9 +1,9 @@
 [Unit]
-Description=Run plasma theme update every 1 minutes and on wake
+Description=Run plasma theme update every 2 minutes and on wake
 
 [Timer]
-OnBootSec=0min
-OnUnitActiveSec=1min
+OnBootSec=1min
+OnUnitActiveSec=2min
 Persistent=true
 
 [Install]

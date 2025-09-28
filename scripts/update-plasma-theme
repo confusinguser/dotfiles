@@ -14,8 +14,8 @@ to_timestamp() {
     date -d "today $h:$m" +%s
 }
 
-sunrise_str=$(sunwait list rise angle 0 ${LAT}N ${LON}E | awk '{print $1}')
-sunset_str=$(sunwait list set angle 0 ${LAT}N ${LON}E | awk '{print $1}')
+sunrise_str=$(sunwait list rise angle -10 ${LAT}N ${LON}E | awk '{print $1}')
+sunset_str=$(sunwait list set angle 3 ${LAT}N ${LON}E | awk '{print $1}')
 
 sunrise=$(to_timestamp "$sunrise_str")
 sunset=$(to_timestamp "$sunset_str")
