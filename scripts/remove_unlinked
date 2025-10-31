@@ -1,34 +1,39 @@
 #!/usr/bin/env python3
-
 import os
 import sys
 import argparse
 from pathlib import Path
 
 def is_orphan(file_path: Path) -> bool:
-    """Return True if file has hard-link count == 1 (i.e. no other links)."""
+    """Return True if file has hard-link count == 1 (i.e. no other hard links)."""
     try:
         st = file_path.stat()
     except FileNotFoundError:
         return False
-    # Only regular files
     if not file_path.is_file():
         return False
     return st.st_nlink == 1
 
-def find_orphans(folder: Path):
-    """Yield Path objects for orphan files under folder (not dirs)."""
+def is_above_size(file_path: Path, min_bytes: int) -> bool:
+    """Return True if file size >= min_bytes."""
+    try:
+        st = file_path.stat()
+    except FileNotFoundError:
+        return False
+    return st.st_size >= min_bytes
+
+def find_candidates(folder: Path, min_bytes: int):
+    """Yield Path objects for files under folder that are orphan *and* size >= min_bytes."""
     for root, dirs, files in os.walk(folder):
         for fname in files:
             p = Path(root) / fname
-            if is_orphan(p):
+            if is_above_size(p, min_bytes) and is_orphan(p):
                 yield p
 
 def safe_delete(path: Path, *, confirm: bool = False, dry_run: bool = True):
     """Delete the path if allowed. Returns True if deleted."""
-    # Safety guard: ensure it's inside a base folder (no .. trickery)
-    # (You can expand this check based on your constraints.)
-    # e.g. refuse if path is root or parent of your library, etc.
+    # Safety guard: ensure path is inside the target folder (already assumed),
+    # but we can still check it's not root etc
     if dry_run:
         print("[DRY RUN] Would delete:", path)
         return False
@@ -46,9 +51,14 @@ def safe_delete(path: Path, *, confirm: bool = False, dry_run: bool = True):
         return False
 
 def main():
-    parser = argparse.ArgumentParser(description="Delete unlinked (hard link count=1) files in downloads folder.")
+    parser = argparse.ArgumentParser(
+        description="Delete files in downloads folder that have no other hard-links AND are above a size threshold."
+    )
     parser.add_argument("folder", help="Target folder to clean", type=Path)
-    parser.add_argument("--doit", action="store_true", help="Actually delete (not just dry run)")
+    parser.add_argument(
+        "--min-size-mb", help="Minimum file size in MB to consider for deletion (default 15)", type=float, default=15.0
+    )
+    parser.add_argument("--doit", action="store_true", help="Actually delete (not just dry-run)")
     parser.add_argument("--yes", action="store_true", help="Don’t prompt for confirmation on each file")
     args = parser.parse_args()
 
@@ -57,11 +67,14 @@ def main():
         print("Error: folder is not a directory:", folder)
         sys.exit(1)
 
-    print("Scanning folder:", folder)
-    orphans = list(find_orphans(folder))
-    print(f"Found {len(orphans)} orphan files (hard link count = 1).")
+    min_bytes = int(args.min_size_mb * 1024 * 1024)
+    print(f"Scanning folder: {folder}")
+    print(f"Minimum size threshold: {args.min_size_mb} MB → {min_bytes} bytes")
 
-    for p in orphans:
+    candidates = list(find_candidates(folder, min_bytes))
+    print(f"Found {len(candidates)} candidate files for deletion (size ≥ threshold AND link-count=1).")
+
+    for p in candidates:
         safe_delete(p, confirm=not args.yes, dry_run=not args.doit)
 
     print("Done.")
