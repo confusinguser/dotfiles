@@ -20,3 +20,5 @@ sudo systemctl enable --now conservation-mode.service
 mkdir /etc/wireguard
 sudo chown $USER /etc/wireguard
 sudo chmod 755 /etc/wireguard
+
+git config --global core.excludesfile ~/dotfiles/config/.gitignore_global
